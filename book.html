@@ -1,0 +1,1980 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<!-- Backup for .htaccess no-cache rules, in case mod_headers isn't enabled on the server -->
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<!-- Auto-update checker: forces a one-time reload if this device is still
+     showing an old cached page, so future updates need zero manual action
+     on ANY device (see version.json). -->
+<script>
+(function(){
+  try {
+    var STORAGE_KEY = 'bsrp_site_version';
+    var stored = localStorage.getItem(STORAGE_KEY);
+    fetch('version.json?_=' + Date.now(), { cache: 'no-store' })
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        var latest = data && data.v;
+        if (!latest) return;
+        if (stored && stored !== latest) {
+          localStorage.setItem(STORAGE_KEY, latest);
+          location.reload(true);
+        } else if (!stored) {
+          localStorage.setItem(STORAGE_KEY, latest);
+        }
+      })
+      .catch(function(){});
+  } catch (e) {}
+})();
+</script>
+<title>Buy Sale Rental Property.com — Registration</title>
+<meta name="description" content="Register for Buy, Lease, Tenant Rental or Property listing services.">
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,700&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --radius-sm:8px; --radius-md:14px; --radius-lg:22px;
+}
+html[data-theme="light"]{
+  --paper:#F6F3FC;
+  --paper-2:#ECE5FA;
+  --card:rgba(255,255,255,0.72);
+  --card-solid:#FFFFFF;
+  --ink:#160B26;
+  --ink-muted:#5C4E78;
+  --ink-faint:#9086AC;
+  --rule:#DDD3F3;
+  --rule-strong:#3A1F63;
+  --accent:#7C3AED;
+  --accent-2:#1E1233;
+  --accent-grad:linear-gradient(135deg, #9333EA 0%, #6D28D9 55%, #3B0F70 100%);
+  --glow:0 0 0 rgba(124,58,237,0);
+  --shadow:0 18px 40px -18px rgba(76,29,149,0.35);
+  --toast-bg:#1E1233;
+  --toast-text:#F6F3FC;
+  --overlay-bg:rgba(20,10,36,0.68);
+  --bg-gradient:radial-gradient(1100px 640px at 12% -8%, rgba(147,51,234,0.16), transparent 60%),
+    radial-gradient(900px 560px at 100% 0%, rgba(59,15,112,0.12), transparent 55%),
+    #F6F3FC;
+}
+html[data-theme="dark"]{
+  --paper:#0B0714;
+  --paper-2:#120A1F;
+  --card:rgba(24,14,38,0.62);
+  --card-solid:#160D24;
+  --ink:#F3ECFF;
+  --ink-muted:#B6A6DB;
+  --ink-faint:#71618F;
+  --rule:#2E2145;
+  --rule-strong:#EDE3FF;
+  --accent:#B084F5;
+  --accent-2:#C084FC;
+  --accent-grad:linear-gradient(135deg, #C084FC 0%, #9333EA 55%, #4C1D95 100%);
+  --glow:0 0 28px rgba(176,132,245,0.35);
+  --shadow:0 20px 46px -18px rgba(0,0,0,0.75);
+  --toast-bg:#EDE3FF;
+  --toast-text:#160D24;
+  --overlay-bg:rgba(5,2,10,0.82);
+  --bg-gradient:radial-gradient(1200px 700px at 10% -10%, rgba(147,51,234,0.28), transparent 60%),
+    radial-gradient(900px 600px at 100% 10%, rgba(192,132,252,0.14), transparent 55%),
+    radial-gradient(700px 500px at 50% 110%, rgba(76,29,149,0.25), transparent 60%),
+    #0B0714;
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg-gradient);
+  color:var(--ink);
+  font-family:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight:500;
+  min-height:100vh;
+  padding-bottom:calc(112px + env(safe-area-inset-bottom, 0px));
+  transition:background-color .35s ease, color .35s ease;
+  position:relative;
+  overflow-x:hidden;
+}
+
+h1,h2,h3,h4,.font-display{font-family:'Playfair Display', Georgia, serif; font-weight:800;}
+.font-mono{font-family:'JetBrains Mono', 'Courier New', monospace;}
+.text-muted-custom{color:var(--ink-muted);}
+.text-accent{color:var(--accent);}
+strong, b, .fw-bold-custom{font-weight:800;}
+
+@media (prefers-reduced-motion: reduce){ *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;} }
+
+/* ===== Ambient bubble field (2D, behind everything) ===== */
+.bubble-field{position:fixed; inset:0; z-index:-2; overflow:hidden; pointer-events:none;}
+.bubble{
+  position:absolute; bottom:-160px; border-radius:50%;
+  background:var(--accent-grad); opacity:0.16; filter:blur(2px);
+  animation:bubbleRise linear infinite;
+}
+html[data-theme="dark"] .bubble{opacity:0.28;}
+@keyframes bubbleRise{
+  0%{transform:translateY(0) translateX(0) scale(1); opacity:0;}
+  10%{opacity:var(--bubble-op, 0.2);}
+  50%{transform:translateY(-52vh) translateX(var(--drift,20px)) scale(1.06);}
+  90%{opacity:var(--bubble-op, 0.2);}
+  100%{transform:translateY(-108vh) translateX(calc(var(--drift,20px) * -1)) scale(0.9); opacity:0;}
+}
+
+/* ===== 3D hero canvas ===== */
+#heroCanvas{position:absolute; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; opacity:0.85;}
+.hero{position:relative; overflow:hidden;}
+.hero > *:not(#heroCanvas){position:relative; z-index:1;}
+
+/* ===== Masthead ===== */
+.masthead{
+  position:sticky; top:0; z-index:1000;
+  background:var(--card); backdrop-filter:blur(18px) saturate(150%); -webkit-backdrop-filter:blur(18px) saturate(150%);
+  border-bottom:1px solid var(--rule); box-shadow:0 1px 0 rgba(147,51,234,0.06);
+  padding:14px 0 10px;
+}
+.masthead-rule-top{background:var(--accent-grad); height:2px; border-radius:2px; margin-bottom:8px; opacity:0.7;}
+.masthead-meta{
+  display:flex; justify-content:space-between; font-family:'JetBrains Mono',monospace;
+  font-size:0.62rem; font-weight:600; letter-spacing:0.04em; color:var(--ink-muted); text-transform:uppercase; margin-bottom:4px;
+}
+.masthead-title-row{display:flex; align-items:center; justify-content:center; gap:14px; position:relative;}
+.masthead-name{
+  font-family:'Playfair Display',serif; font-weight:900; font-size:clamp(1.25rem,5.2vw,2.3rem);
+  letter-spacing:-0.01em; line-height:1.1; text-align:center; flex:1; min-width:0;
+  word-break:break-word;
+}
+.masthead-name .dot{color:var(--accent);}
+.masthead-tagline{
+  text-align:center; font-style:normal; font-weight:500; font-size:clamp(0.64rem,2vw,0.78rem); color:var(--ink-muted); margin-top:4px;
+  font-family:'Inter',sans-serif; padding:0 4px;
+}
+
+/* Edition toggle (day/night switch) */
+.edition-toggle{
+  display:flex; align-items:center; gap:4px; border:1.5px solid var(--rule-strong);
+  border-radius:99px; padding:3px; background:var(--card); flex-shrink:0;
+}
+.edition-toggle button{
+  border:none; background:transparent; padding:6px 9px; border-radius:99px;
+  font-family:'JetBrains Mono',monospace; font-size:0.68rem; color:var(--ink-muted); cursor:pointer;
+  display:flex; align-items:center; gap:5px; transition:all .25s ease; white-space:nowrap;
+}
+.edition-toggle button.active{background:var(--ink); color:var(--paper);}
+html[data-theme="dark"] .edition-toggle button.active{background:var(--accent); color:#0B0714;}
+@media(max-width:576px){
+  .masthead-title-row{justify-content:space-between; gap:8px;}
+  .edition-toggle .toggle-text{display:none;}
+  .edition-toggle button{padding:8px;}
+}
+@media(max-width:420px){
+  .masthead-tagline{display:none;}
+}
+
+/* ===== Hero ===== */
+.hero{padding:30px 0 6px; border-bottom:1px solid var(--rule); margin-bottom:8px;}
+.hero-eyebrow{
+  font-family:'JetBrains Mono',monospace; font-size:0.68rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent-2);
+  display:flex; align-items:center; gap:6px;
+}
+.hero h1{font-size:clamp(1.6rem,4.6vw,2.3rem); font-weight:700; margin:8px 0 10px; line-height:1.18;}
+.hero p{color:var(--ink-muted); font-size:0.98rem; max-width:540px;}
+
+.time-pill{
+  display:inline-flex; align-items:center; gap:7px; margin-top:12px; padding:6px 12px;
+  border:1px solid var(--rule); border-radius:99px; background:var(--card);
+  font-family:'JetBrains Mono',monospace; font-size:0.68rem; letter-spacing:0.02em; color:var(--ink-muted);
+}
+.time-pill i{color:var(--accent-2);}
+
+.trust-note{
+  display:flex; align-items:flex-start; gap:8px; margin-top:6px; padding:9px 11px;
+  border:1px dashed var(--rule); border-radius:var(--radius-sm); background:rgba(44,74,94,0.05);
+  font-size:0.74rem; color:var(--ink-muted); line-height:1.35;
+}
+html[data-theme="dark"] .trust-note{background:rgba(111,163,194,0.07);}
+.trust-note i{color:var(--accent-2); margin-top:1px; flex-shrink:0;}
+
+.inline-check-row{
+  display:flex; align-items:center; gap:8px; margin:-10px 0 22px; font-size:0.82rem; color:var(--ink-muted);
+}
+.inline-check-row input{width:16px; height:16px; cursor:pointer; accent-color:var(--accent-2);}
+.inline-check-row label{cursor:pointer;}
+
+/* ===== Signature element: the Ticket ===== */
+.ticket{
+  position:relative;
+  border:1.5px solid var(--rule);
+  border-radius:var(--radius-lg);
+  background:var(--card);
+  backdrop-filter:blur(18px) saturate(150%); -webkit-backdrop-filter:blur(18px) saturate(150%);
+  padding:22px 22px 18px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+/* Intro card above the ticket — was hardcoded Bootstrap "bg-white", which
+   ignored the Day/Night toggle and always showed a white box even in dark
+   mode. Uses the same theme variables as the rest of the page instead. */
+.hero-intro-card{
+  background:var(--card-solid);
+  border:1.5px solid var(--rule) !important;
+  border-radius:var(--radius-lg) !important;
+  color:var(--ink);
+}
+.hero-intro-card .hero-eyebrow{color:var(--accent);}
+.hero-intro-card h1{color:var(--ink);}
+.hero-intro-card p{color:var(--ink-muted);}
+.ticket::before, .ticket::after{
+  content:""; position:absolute; top:50%; width:20px; height:20px; border-radius:50%;
+  background:var(--paper); border:1.5px solid var(--rule); transform:translateY(-50%);
+}
+.ticket::before{left:-10px;} .ticket::after{right:-10px;}
+.ticket-top{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
+.ticket-label{font-family:'JetBrains Mono',monospace; font-size:0.62rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-muted); font-weight:700;}
+.ticket-id{font-family:'JetBrains Mono',monospace; font-size:0.76rem; color:var(--accent); font-weight:700;}
+.stamp{
+  width:56px; height:56px; border-radius:50%; border:2.5px solid transparent; color:#fff;
+  background:var(--accent-grad) padding-box, var(--accent-grad) border-box; box-shadow:var(--glow);
+  display:flex; align-items:center; justify-content:center; text-align:center; transform:rotate(-9deg);
+  font-family:'JetBrains Mono',monospace; font-size:0.56rem; font-weight:700; letter-spacing:0.02em; text-transform:uppercase;
+  flex-shrink:0; line-height:1.05; transition:all .3s ease; padding:3px;
+}
+.ticket-name{font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:800; margin-top:14px; min-height:1.8rem;}
+.ticket-name.placeholder{color:var(--ink-faint); font-style:italic; font-size:1.05rem; font-weight:400;}
+.ticket-meta-row{display:flex; gap:24px; margin-top:14px; flex-wrap:wrap; border-top:1px dashed var(--rule); padding-top:12px;}
+.ticket-meta .k{font-size:0.62rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-faint); font-family:'JetBrains Mono',monospace; font-weight:700;}
+.ticket-meta .v{font-family:'JetBrains Mono',monospace; font-size:1.02rem; font-weight:700; color:var(--ink); margin-top:2px;}
+.ticket-meta .v.accent{color:var(--accent);}
+.ticket-progress-track{margin-top:16px; height:6px; background:var(--rule); border-radius:99px; overflow:hidden;}
+.ticket-progress-fill{height:100%; background:var(--accent-grad); width:0%; transition:width .5s cubic-bezier(.4,0,.2,1); box-shadow:var(--glow);}
+@media(max-width:480px){
+  .ticket{padding:18px 16px 14px;}
+  .ticket-meta-row{gap:16px;}
+  .ticket-meta .v{font-size:0.88rem;}
+  .ticket-name{font-size:1.15rem;}
+  .stamp{width:48px; height:48px; font-size:0.5rem;}
+}
+
+/* ===== Step indicator ===== */
+.step-indicator{display:flex; gap:8px; margin:24px 0 16px; padding:0 2px;}
+.step-dot{flex:1; text-align:center; position:relative;}
+.step-dot .circle{
+  width:34px;height:34px;border-radius:50%; background:var(--paper-2); border:1.5px solid var(--rule);
+  display:flex;align-items:center;justify-content:center; font-family:'JetBrains Mono',monospace; font-size:0.8rem; font-weight:700;
+  color:var(--ink-muted); margin:0 auto 6px; transition:all .3s ease;
+}
+.step-dot.active .circle{background:var(--accent-grad); border-color:transparent; color:#fff; font-weight:800; box-shadow:var(--glow);}
+.step-dot.done .circle{background:var(--ink); border-color:var(--ink); color:var(--paper);}
+html[data-theme="dark"] .step-dot.done .circle{background:var(--accent-2); border-color:var(--accent-2); color:#0B0714;}
+.step-dot .label{font-size:0.62rem; color:var(--ink-muted); font-family:'JetBrains Mono',monospace; font-weight:600; letter-spacing:0.02em;}
+.step-dot.active .label{color:var(--accent); font-weight:800;}
+.step-line{position:absolute; top:16px; left:-50%; width:100%; height:1px; background:var(--rule); z-index:-1;}
+.step-dot:first-child .step-line{display:none;}
+.step-dot.done .step-line{background:var(--ink);}
+@media(max-width:420px){
+  .step-dot .label{font-size:0.56rem;}
+}
+@media(max-width:360px){
+  .step-dot .label{display:none;}
+}
+
+/* ===== Sticky progress bar (compact, stays visible while filling the form) ===== */
+.progress-sticky{
+  position:sticky; top:var(--masthead-h, 98px); z-index:990;
+  background:var(--paper); border-bottom:1px solid var(--rule);
+  padding:9px 0; transition:top .15s ease;
+}
+.progress-sticky-inner{display:flex; align-items:center; gap:12px;}
+.progress-sticky-text{
+  font-family:'JetBrains Mono',monospace; font-size:0.72rem; letter-spacing:0.02em; color:var(--ink-muted);
+  white-space:nowrap; flex-shrink:0;
+}
+.progress-sticky-text strong{color:var(--ink); font-weight:700;}
+.progress-sticky-track{flex:1; height:6px; background:var(--rule); border-radius:99px; overflow:hidden; min-width:40px;}
+.progress-sticky-fill{height:100%; background:var(--accent); width:0%; transition:width .4s cubic-bezier(.4,0,.2,1);}
+.progress-sticky-pct{font-family:'JetBrains Mono',monospace; font-size:0.7rem; color:var(--accent); flex-shrink:0; min-width:32px; text-align:right;}
+@media(max-width:480px){
+  .progress-sticky-text{font-size:0.64rem;}
+  .progress-sticky-text .full-label{display:none;}
+  .progress-sticky-pct{font-size:0.64rem; min-width:26px;}
+}
+
+/* ===== Card / column layout (glassmorphism) ===== */
+.paper-card{
+  background:var(--card); border:1px solid var(--rule); border-radius:var(--radius-lg);
+  padding:24px 20px; box-shadow:var(--shadow); backdrop-filter:blur(18px) saturate(150%); -webkit-backdrop-filter:blur(18px) saturate(150%);
+}
+@media(min-width:768px){.paper-card{padding:32px 40px;}}
+
+.form-step{display:none; animation:fadeSlideIn .45s cubic-bezier(.22,1,.36,1) both;}
+.form-step.active{display:block;}
+@keyframes fadeSlideIn{from{opacity:0; transform:translateY(14px) scale(0.99);} to{opacity:1; transform:translateY(0) scale(1);}}
+
+.step-title{
+  font-size:1.4rem; font-weight:800; margin-bottom:4px; display:flex; align-items:center; gap:10px;
+  font-family:'Playfair Display',serif;
+}
+.step-title i{
+  color:#fff; background:var(--accent-grad); width:38px; height:38px; border-radius:12px;
+  display:inline-flex; align-items:center; justify-content:center; font-size:1.1rem; box-shadow:var(--glow);
+}
+.step-sub{color:var(--ink-muted); font-size:0.9rem; margin-bottom:6px; font-weight:500;}
+.step-rule{border:none; border-top:1px solid var(--rule); margin:10px 0 22px;}
+
+.section-label{
+  font-family:'JetBrains Mono',monospace; font-size:0.68rem; letter-spacing:0.09em; text-transform:uppercase;
+  color:var(--accent); font-weight:700; margin:26px 0 14px; display:flex; align-items:center; gap:8px;
+}
+.section-label::after{content:""; flex:1; height:1px; background:var(--rule);}
+.section-label:first-of-type{margin-top:0;}
+
+/* ===== Inputs (premium glass fields) ===== */
+.field-group{position:relative; margin-bottom:22px;}
+.field-group .form-control, .field-group .form-select{
+  background:var(--paper-2); border:1.5px solid var(--rule);
+  color:var(--ink); border-radius:var(--radius-sm); padding:18px 14px 8px; font-size:0.96rem; height:auto;
+  font-family:'Inter',sans-serif; font-weight:600;
+  transition:border-color .2s ease, background-color .2s ease, box-shadow .2s ease;
+}
+.field-group .form-control::placeholder{color:transparent;}
+.field-group .form-control:focus, .field-group .form-select:focus{
+  background:var(--card-solid); border-color:var(--accent); box-shadow:0 0 0 4px rgba(147,51,234,0.16); color:var(--ink);
+}
+html[data-theme="dark"] .field-group .form-control:focus, html[data-theme="dark"] .field-group .form-select:focus{box-shadow:0 0 0 4px rgba(176,132,245,0.22);}
+.field-group .form-select{color-scheme:light;}
+html[data-theme="dark"] .field-group .form-select{color-scheme:dark;}
+/* Browser autofill (name/mobile/email/etc.) otherwise forces its own white
+   background + black text regardless of theme — this overrides that via
+   Chrome/Edge/Safari's -webkit-box-shadow trick (setting background-color
+   directly on an autofilled field is ignored by the browser). */
+.field-group .form-control:-webkit-autofill,
+.field-group .form-control:-webkit-autofill:hover,
+.field-group .form-control:-webkit-autofill:focus,
+.field-group .form-control:-webkit-autofill:active{
+  -webkit-text-fill-color: var(--ink) !important;
+  caret-color: var(--ink);
+  transition: background-color 9999s ease-in-out 0s;
+  -webkit-box-shadow: 0 0 0 1000px var(--paper-2) inset !important;
+  box-shadow: 0 0 0 1000px var(--paper-2) inset !important;
+}
+.field-group .form-control:-webkit-autofill:focus{
+  -webkit-box-shadow: 0 0 0 1000px var(--card-solid) inset !important;
+  box-shadow: 0 0 0 1000px var(--card-solid) inset !important;
+}
+.field-group label.floating{
+  position:absolute; left:14px; top:16px; font-size:0.96rem; color:var(--ink-muted); font-weight:500;
+  pointer-events:none; transition:all .16s ease; font-family:'Inter',sans-serif;
+}
+.field-group .form-control:focus ~ label.floating,
+.field-group .form-control:not(:placeholder-shown) ~ label.floating,
+.field-group .form-select ~ label.floating.select-label{
+  top:6px; font-size:0.64rem; color:var(--accent); font-family:'JetBrains Mono',monospace; font-weight:700; letter-spacing:0.03em; text-transform:uppercase;
+}
+.field-group textarea.form-control{min-height:86px; padding-top:22px;}
+.field-group textarea.form-control ~ label.floating{top:16px;}
+.field-group textarea.form-control:focus ~ label.floating,
+.field-group textarea.form-control:not(:placeholder-shown) ~ label.floating{top:6px; font-size:0.64rem;}
+
+.field-hint{font-size:0.74rem; color:var(--ink-muted); margin-top:5px;}
+.field-optional-tag{font-size:0.64rem; color:var(--ink-faint); font-family:'JetBrains Mono',monospace; letter-spacing:0.03em;}
+
+/* Friendlier inline error */
+.invalid-msg{
+  display:none; align-items:flex-start; gap:6px; margin-top:7px;
+  font-size:0.8rem; color:var(--accent); font-family:'Inter',sans-serif; font-weight:600; line-height:1.3;
+  animation:errIn .2s ease both;
+}
+.invalid-msg i{font-size:0.85rem; margin-top:1px; flex-shrink:0;}
+@keyframes errIn{from{opacity:0; transform:translateY(-3px);} to{opacity:1; transform:translateY(0);}}
+.field-group.is-invalid .form-control, .field-group.is-invalid .form-select{border-color:var(--accent); box-shadow:0 0 0 4px rgba(220,38,127,0.08);}
+.field-group.is-invalid .invalid-msg{display:flex;}
+
+/* ===== Choice cards ===== */
+.choice-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:12px;}
+@media(min-width:576px){.choice-grid.services{grid-template-columns:repeat(4,1fr);}}
+@media(min-width:900px){.choice-grid.services{grid-template-columns:repeat(4,1fr);}}
+.choice-card{
+  cursor:pointer; border-radius:var(--radius-md); border:1.5px solid var(--rule);
+  background:var(--paper-2); padding:18px 12px; text-align:center; transition:all .22s cubic-bezier(.22,1,.36,1); position:relative;
+  touch-action:manipulation;
+}
+.choice-card:hover{border-color:var(--accent); transform:translateY(-3px); box-shadow:var(--glow), var(--shadow);}
+.choice-card:active{transform:translateY(-1px) scale(0.98);}
+.choice-card i{font-size:1.5rem; color:var(--ink-muted); transition:color .2s ease;}
+.choice-card .cc-label{display:block; margin-top:8px; font-size:0.86rem; font-weight:700; font-family:'Inter',sans-serif;}
+.choice-card .cc-fee{display:block; margin-top:3px; font-size:0.68rem; color:var(--ink-muted); font-family:'JetBrains Mono',monospace; font-weight:600;}
+.choice-card input{position:absolute; opacity:0; pointer-events:none;}
+.choice-card.selected{border-color:transparent; background:var(--accent-grad); box-shadow:var(--glow), var(--shadow);}
+.choice-card.selected i, .choice-card.selected .cc-label, .choice-card.selected .cc-fee{color:#fff;}
+.choice-grid.is-invalid .choice-card{border-color:var(--accent); box-shadow:0 0 0 4px rgba(220,38,127,0.08);}
+.choice-grid.is-invalid + .invalid-msg{display:flex;}
+
+/* ===== Uploads ===== */
+.upload-tile{
+  border:1.5px dashed var(--rule); border-radius:var(--radius-md); padding:20px 14px; text-align:center;
+  cursor:pointer; background:var(--paper-2); transition:all .22s ease; position:relative; margin-bottom:14px;
+}
+.upload-tile:hover{border-color:var(--accent); box-shadow:var(--glow);}
+.upload-tile i{font-size:1.4rem; color:var(--ink-muted);}
+.upload-tile .ut-title{font-size:0.88rem; font-weight:700; margin-top:8px; font-family:'Inter',sans-serif;}
+.upload-tile .ut-req{font-size:0.64rem; color:var(--accent); font-weight:700; font-family:'JetBrains Mono',monospace; letter-spacing:0.02em;}
+.upload-tile .ut-status{font-size:0.72rem; margin-top:6px; color:var(--ink-muted); font-weight:500;}
+.upload-tile.filled{border-style:solid; border-color:var(--accent);}
+.upload-tile.filled .ut-status{color:var(--accent);}
+.upload-tile input[type=file]{position:absolute; inset:0; opacity:0; cursor:pointer;}
+.upload-tile.is-invalid{border-color:var(--accent); border-style:solid;}
+.upload-tile.drag-over{border-color:var(--accent); background:rgba(147,51,234,0.1); box-shadow:var(--glow);}
+.upload-tile .ut-remove{
+  position:relative; z-index:2; display:inline-flex; align-items:center; gap:4px; margin-top:6px;
+  font-size:0.68rem; font-weight:700; color:var(--accent); background:none; border:none; padding:2px 4px; cursor:pointer;
+}
+.upload-tile .ut-remove:hover{text-decoration:underline;}
+
+/* ===== Property media gallery (photos + video) ===== */
+.media-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:8px;}
+@media(min-width:576px){.media-grid{grid-template-columns:repeat(5,1fr);}}
+.media-tile{
+  position:relative; aspect-ratio:1/1; border-radius:var(--radius-sm); overflow:hidden;
+  border:1.5px solid var(--rule); background:var(--paper-2);
+}
+.media-tile img, .media-tile video{width:100%; height:100%; object-fit:cover; display:block;}
+.media-tile .mt-remove{
+  position:absolute; top:4px; right:4px; width:22px; height:22px; border-radius:50%;
+  background:rgba(0,0,0,0.6); color:#fff; border:none; font-size:0.8rem; line-height:1;
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
+}
+.media-tile .mt-badge{
+  position:absolute; bottom:4px; left:4px; font-size:0.58rem; font-family:'JetBrains Mono',monospace;
+  background:rgba(0,0,0,0.6); color:#fff; padding:2px 6px; border-radius:6px; text-transform:uppercase;
+}
+.media-add-tile{
+  aspect-ratio:1/1; border-radius:var(--radius-sm); border:1.5px dashed var(--rule);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;
+  cursor:pointer; color:var(--ink-muted); background:var(--paper-2); text-align:center; padding:4px;
+  transition:.2s;
+}
+.media-add-tile:hover{border-color:var(--accent); color:var(--accent);}
+.media-add-tile i{font-size:1.3rem;}
+.media-add-tile span{font-size:0.62rem; font-weight:700; text-transform:uppercase;}
+.media-note{font-size:0.72rem; color:var(--ink-muted); margin-top:8px;}
+.media-note.err{color:var(--accent); font-weight:700;}
+.gallery-block{padding:14px; border-radius:var(--radius-md); border:1.5px solid var(--rule); background:var(--paper-2);}
+.gallery-block.is-invalid{border-color:var(--accent); border-style:solid;}
+.gallery-block .ut-title{font-size:0.88rem; font-weight:700; font-family:'Inter',sans-serif;}
+.gallery-block .ut-req{font-size:0.64rem; color:var(--accent); font-weight:700; font-family:'JetBrains Mono',monospace; letter-spacing:0.02em; margin-left:6px;}
+
+/* ===== Payment ===== */
+.pay-amount-display{
+  border:1.5px solid var(--rule); border-radius:var(--radius-lg); padding:28px; text-align:center;
+  background:var(--paper-2); margin-bottom:24px; position:relative; overflow:hidden;
+}
+.pay-amount-display::before{
+  content:""; position:absolute; inset:0; background:var(--accent-grad); opacity:0.08;
+}
+.pay-amount-display .pa-label{font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-muted); font-family:'JetBrains Mono',monospace; font-weight:700; position:relative;}
+.pay-amount-display .pa-value{
+  font-family:'Playfair Display',serif; font-size:2.7rem; font-weight:900; margin-top:6px; position:relative;
+  background:var(--accent-grad); -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.pay-btn{
+  display:flex; align-items:center; justify-content:center; gap:10px; border-radius:var(--radius-sm); padding:15px;
+  font-weight:700; font-size:0.9rem; border:1.5px solid var(--rule); background:var(--paper-2); color:var(--ink);
+  transition:all .2s ease; width:100%; margin-bottom:12px; font-family:'Inter',sans-serif;
+}
+.pay-btn:hover{border-color:var(--accent); color:var(--ink); transform:translateY(-2px); box-shadow:var(--glow);}
+.pay-btn:active{transform:translateY(0) scale(0.98);}
+.qr-box{
+  width:160px; height:160px; margin:18px auto; border:1.5px solid var(--rule); border-radius:var(--radius-md);
+  background:repeating-conic-gradient(var(--paper) 0% 25%, var(--paper-2) 0% 50%) 50% / 18px 18px;
+  display:flex; align-items:center; justify-content:center; color:var(--ink-muted); font-size:0.7rem; font-weight:700;
+  text-align:center; padding:10px; font-family:'JetBrains Mono',monospace; overflow:hidden;
+}
+
+/* ===== Declaration ===== */
+.declare-box{
+  display:flex; gap:12px; align-items:flex-start; background:var(--paper-2); border:1px solid var(--rule);
+  border-radius:var(--radius-md); padding:16px; margin-top:10px;
+}
+.declare-box input{width:18px; height:18px; margin-top:2px; accent-color:var(--accent);}
+
+/* ===== Terms & Conditions notice ===== */
+.tnc-box{
+  display:flex; gap:12px; align-items:flex-start; background:var(--paper-2); border:1px solid var(--rule);
+  border-left:3px solid var(--accent); border-radius:var(--radius-md); padding:16px; margin-bottom:22px;
+  font-size:0.85rem; line-height:1.55; color:var(--ink);
+}
+.tnc-box i{font-size:1.1rem; color:var(--accent); margin-top:2px; flex-shrink:0;}
+.tnc-box strong{font-weight:700;}
+
+/* ===== Bottom bar ===== */
+.bottom-bar{
+  position:fixed; bottom:0; left:0; right:0; z-index:1000; background:var(--card);
+  border-top:1px solid var(--rule); padding:14px 16px calc(14px + env(safe-area-inset-bottom, 0px));
+  backdrop-filter:blur(18px) saturate(150%); -webkit-backdrop-filter:blur(18px) saturate(150%);
+}
+.btn-premium{
+  background:var(--accent-grad); border:none; color:#fff; font-weight:800; border-radius:var(--radius-sm);
+  padding:15px 22px; font-size:0.98rem; letter-spacing:0.01em; font-family:'Inter',sans-serif;
+  transition:transform .15s cubic-bezier(.22,1,.36,1), box-shadow .15s ease; box-shadow:var(--shadow);
+  position:relative; overflow:hidden; touch-action:manipulation;
+}
+.btn-premium:hover{color:#fff; transform:translateY(-2px); box-shadow:var(--glow), var(--shadow);}
+.btn-premium:active{transform:translateY(0) scale(0.97);}
+.btn-premium:disabled{opacity:0.5; cursor:not-allowed; transform:none; box-shadow:none;}
+.btn-ghost{
+  background:var(--paper-2); border:1.5px solid var(--rule); color:var(--ink); border-radius:var(--radius-sm);
+  padding:15px 20px; font-weight:700; font-size:0.9rem; font-family:'Inter',sans-serif; transition:all .15s ease;
+  touch-action:manipulation;
+}
+.btn-ghost:hover{border-color:var(--accent); color:var(--ink); transform:translateY(-1px);}
+.btn-ghost:active{transform:translateY(0) scale(0.97);}
+.btn-ghost:disabled{opacity:0.3;}
+@media(max-width:380px){
+  .btn-premium, .btn-ghost{padding:13px 14px; font-size:0.86rem;}
+  .btn-ghost span.btn-full-text{display:none;}
+}
+
+/* ===== Success overlay ===== */
+.overlay{
+  position:fixed; inset:0; z-index:2000; background:var(--overlay-bg); backdrop-filter:blur(4px);
+  display:none; align-items:center; justify-content:center; padding:20px;
+}
+.overlay.show{display:flex;}
+.loader-ring{width:50px; height:50px; border-radius:50%; border:3px solid var(--rule); border-top-color:var(--accent); animation:spin .9s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.success-card{text-align:center; max-width:380px; animation:popIn .45s cubic-bezier(.34,1.56,.64,1) both;}
+@keyframes popIn{from{opacity:0; transform:scale(0.9);} to{opacity:1; transform:scale(1);}}
+.success-stamp{
+  width:84px; height:84px; border-radius:50%; margin:0 auto 18px; border:none; color:#fff;
+  background:var(--accent-grad); box-shadow:var(--glow), var(--shadow);
+  display:flex; align-items:center; justify-content:center; font-size:2rem; transform:rotate(-6deg);
+}
+
+/* ===== Page exit transition (success → index) ===== */
+body.page-exiting{
+  animation:pageExitOut .5s cubic-bezier(.4,0,.2,1) forwards;
+  pointer-events:none;
+}
+@keyframes pageExitOut{
+  from{opacity:1; transform:scale(1);}
+  to{opacity:0; transform:scale(0.97);}
+}
+
+/* ===== Toasts (deliberately modern — contrast against the vintage page chrome) ===== */
+.toast-stack{
+  position:fixed; top:16px; right:16px; z-index:3000; display:flex; flex-direction:column; gap:10px;
+  max-width:min(360px, calc(100vw - 32px));
+}
+.toast-item{
+  background:var(--toast-bg); color:var(--toast-text); border-radius:12px; padding:13px 14px;
+  display:flex; align-items:flex-start; gap:10px; box-shadow:0 12px 30px -10px rgba(0,0,0,0.4);
+  font-family:'Inter',sans-serif; font-size:0.86rem; line-height:1.35;
+  animation:toastIn .3s cubic-bezier(.34,1.56,.64,1) both;
+}
+.toast-item.leaving{animation:toastOut .25s ease forwards;}
+@keyframes toastIn{from{opacity:0; transform:translateX(24px) scale(0.96);} to{opacity:1; transform:translateX(0) scale(1);}}
+@keyframes toastOut{to{opacity:0; transform:translateX(24px) scale(0.96);}}
+.toast-item i{font-size:1.05rem; margin-top:1px; flex-shrink:0;}
+.toast-item.success i{color:#6FBF8B;}
+.toast-item.error i{color:#E27373;}
+.toast-item.info i{color:#7FB0D6;}
+.toast-item .toast-close{
+  margin-left:auto; background:none; border:none; color:inherit; opacity:0.55; padding:0 0 0 8px; cursor:pointer; font-size:0.9rem;
+}
+.toast-item .toast-close:hover{opacity:1;}
+@media(max-width:480px){ .toast-stack{left:16px; right:16px; max-width:none;} }
+
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, .choice-card:focus-visible, .upload-tile:focus-visible{
+  outline:2px solid var(--accent-2); outline-offset:2px;
+}
+::selection{background:rgba(156,43,38,0.25);}.masthead-links{display:flex; flex-direction:column; gap:2px; width:110px;}
+.masthead-links a{
+  font-family:'JetBrains Mono',monospace; font-size:0.62rem; letter-spacing:0.04em; text-transform:uppercase;
+  color:var(--ink-muted); text-decoration:none; display:flex; align-items:center; gap:4px; white-space:nowrap;
+}
+.masthead-links a:hover{color:var(--accent);}
+@media(max-width:576px){.masthead-links{display:none;}}
+</style>
+</head>
+<body>
+
+<div class="bubble-field" id="bubbleField" aria-hidden="true"></div>
+
+<div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="false"></div>
+
+<!-- Masthead -->
+<div class="masthead">
+  <div class="container">
+    <div class="masthead-meta">
+      <span id="datelineLeft">Est. Property Registry</span>
+      <span id="datelineRight"></span>
+    </div>
+    <div class="masthead-title-row">
+      <div class="masthead-links">
+        <a href="index.html"><i class="bi bi-house"></i> Home</a>
+        <a href="add-property.html"><i class="bi bi-buildings"></i> Property</a>
+      </div>
+      <div>
+        <div class="masthead-name">Buy Sale Rental Property<span class="dot">.com</span></div>
+        <div class="masthead-tagline">Your Trusted Partner for Buying, Selling, Renting &amp; Leasing Properties</div>
+      </div>
+      <div class="edition-toggle" role="group" aria-label="Theme">
+        <button type="button" id="lightBtn" class="active"><i class="bi bi-sun"></i> <span class="toggle-text">Day</span></button>
+        <button type="button" id="darkBtn"><i class="bi bi-moon-stars"></i> <span class="toggle-text">Night</span></button>
+      </div>
+    </div>
+    <div class="masthead-rule-top"></div>
+  </div>
+</div>
+
+<!-- Compact sticky progress bar — always visible while filling the form -->
+<div class="progress-sticky" id="progressSticky">
+  <div class="container progress-sticky-inner">
+    <div class="progress-sticky-text"><span class="full-label">Step </span><strong id="stickyStepNum">1</strong><span class="full-label"> of 6 &middot; </span><span id="stickyStepLabel">Service</span></div>
+    <div class="progress-sticky-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="stickyProgressTrack">
+      <div class="progress-sticky-fill" id="stickyProgressFill"></div>
+    </div>
+    <div class="progress-sticky-pct" id="stickyProgressPct">0%</div>
+  </div>
+</div>
+
+<!-- Hero + Ticket -->
+<div class="container hero">
+  <canvas id="heroCanvas" aria-hidden="true"></canvas>
+<div class="hero-intro-card px-3 mx-3 pt-3 rounded border ">
+    <div class="hero-eyebrow mt-3"><i class="bi bi-shield-check"></i>Verified &amp; Secure Registration</div>
+  <h1>Register your property requirement in minutes.</h1>
+  <p>Tell us what you're looking for &mdash; buy, sell, rent or lease &mdash; and we'll match you with a dedicated property manager.</p>
+  <div class="time-pill mb-3"><i class="bi bi-clock-history"></i> Takes about 4&ndash;5 minutes &middot; 6 short steps</div>
+
+</div>
+  <div class="ticket mt-4 mx-3 " id="ticketCard">
+    <div class="ticket-top">
+      <div>
+        <div class="ticket-label">Registration Ticket</div>
+        <div class="ticket-id" id="ticketIdDisplay">No. BRP-PENDING</div>
+      </div>
+      <div class="stamp" id="ticketStamp">PENDING</div>
+    </div>
+    <!-- <div class="ticket-name placeholder" id="ticketServiceName">Select a service to begin</div> -->
+    <div class="ticket-meta-row">
+      <div class="ticket-meta"><div class="k">Advance Due</div><div class="v accent" id="ticketFee">&#8377;&mdash;</div></div>
+      <div class="ticket-meta"><div class="k">Applicant</div><div class="v" id="ticketName">&mdash;</div></div>
+      <div class="ticket-meta"><div class="k">Progress</div><div class="v" id="ticketStepCount">1 / 6</div></div>
+    </div>
+    <div class="ticket-progress-track"><div class="ticket-progress-fill" id="ticketProgressFill"></div></div>
+  </div>
+
+  <div class="step-indicator" id="stepIndicator">
+    <div class="step-dot active" data-step="1"><div class="step-line"></div><div class="circle">1</div><div class="label">Service</div></div>
+    <div class="step-dot" data-step="2"><div class="step-line"></div><div class="circle">2</div><div class="label">Personal</div></div>
+    <div class="step-dot" data-step="3"><div class="step-line"></div><div class="circle">3</div><div class="label">Identity</div></div>
+    <div class="step-dot" data-step="4"><div class="step-line"></div><div class="circle">4</div><div class="label">Property</div></div>
+    <div class="step-dot" data-step="5"><div class="step-line"></div><div class="circle">5</div><div class="label">Documents</div></div>
+    <div class="step-dot" data-step="6"><div class="step-line"></div><div class="circle">6</div><div class="label">Payment</div></div>
+  </div>
+</div>
+
+<div class="container pb-4">
+  <form id="regForm" class="paper-card" novalidate>
+
+    <!-- STEP 1 -->
+    <div class="form-step active" data-step="1">
+      <div class="step-title"><i class="bi bi-grid-1x2"></i>Choose your service</div>
+      <div class="step-sub">Select what you'd like to do. The advance amount updates automatically.</div>
+      <hr class="step-rule">
+      <div class="choice-grid services" id="serviceGrid">
+        <label class="choice-card" data-service="Buy" data-fee="2000"><input type="radio" name="serviceType" value="Buy"><i class="bi bi-key"></i><span class="cc-label">Buy</span><span class="cc-fee">&#8377;2,000 advance</span></label>
+        <label class="choice-card" data-service="Lease" data-fee="2000"><input type="radio" name="serviceType" value="Lease"><i class="bi bi-file-earmark-text"></i><span class="cc-label">Lease</span><span class="cc-fee">&#8377;2,000 advance</span></label>
+        <label class="choice-card" data-service="TenantRental" data-fee="2000"><input type="radio" name="serviceType" value="TenantRental"><i class="bi bi-house-check"></i><span class="cc-label">Tenant Rental</span><span class="cc-fee">&#8377;2,000 advance</span></label>
+        <label class="choice-card" data-service="Property" data-fee="2000"><input type="radio" name="serviceType" value="Property"><i class="bi bi-buildings"></i><span class="cc-label">Property</span><span class="cc-fee">&#8377;2,000 advance</span></label>
+      </div>
+      <div class="invalid-msg" id="serviceTypeError" style="margin-top:12px;"><i class="bi bi-exclamation-circle"></i><span>Pick a service above to continue &mdash; Buy, Lease, Tenant Rental or Property.</span></div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="form-step" data-step="2">
+      <div class="step-title"><i class="bi bi-person-vcard"></i>Personal details</div>
+      <div class="step-sub">Basic information so your property manager can reach you.</div>
+      <hr class="step-rule">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="field-group">
+            <input type="text" class="form-control" id="fullName" placeholder=" " autocomplete="name" required>
+            <label class="floating" for="fullName">Full Name</label>
+            <div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>We need your name so we know who to ask for.</span></div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="field-group">
+            <input type="tel" class="form-control" id="mobileNumber" placeholder=" " pattern="[6-9][0-9]{9}" maxlength="10" inputmode="numeric" autocomplete="tel" required>
+            <label class="floating" for="mobileNumber">Mobile Number</label>
+            <div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>That doesn't look like a valid 10-digit mobile number.</span></div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="field-group">
+            <input type="tel" class="form-control" id="whatsappNumber" placeholder=" " pattern="[6-9][0-9]{9}" maxlength="10" inputmode="numeric" autocomplete="tel">
+            <label class="floating" for="whatsappNumber">WhatsApp Number <span class="field-optional-tag">(optional)</span></label>
+            <div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>That doesn't look like a valid 10-digit number.</span></div>
+          </div>
+          <div class="inline-check-row" style="margin-top:-14px;">
+            <input type="checkbox" id="sameAsMobile"><label for="sameAsMobile">Same as mobile number</label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="field-group">
+            <input type="email" class="form-control" id="email" placeholder=" " inputmode="email" autocomplete="email" required>
+            <label class="floating" for="email">Email Address</label>
+            <div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please enter a valid email, like name@example.com.</span></div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="field-group">
+            <input type="date" class="form-control" id="dob" placeholder=" " autocomplete="bday" required>
+            <label class="floating select-label" for="dob">Date of Birth</label>
+            <div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please select your date of birth.</span></div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="field-group">
+            <select class="form-select" id="gender" required><option value="" disabled selected></option><option>Male</option><option>Female</option><option>Other</option><option>Prefer not to say</option></select>
+            <label class="floating select-label" for="gender">Gender</label>
+            <div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please choose an option.</span></div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="field-group">
+            <input type="text" class="form-control" id="occupation" placeholder=" " autocomplete="organization-title" required>
+            <label class="floating" for="occupation">Occupation</label>
+            <div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please tell us your occupation.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="form-step" data-step="3">
+      <div class="step-title"><i class="bi bi-shield-lock"></i>Identity &amp; address</div>
+      <div class="step-sub">Used to verify your registration and match you with local listings.</div>
+      <hr class="step-rule">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="field-group">
+            <input type="text" class="form-control" id="religion" placeholder=" " required>
+            <label class="floating" for="religion">Religion</label>
+            <div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please enter your religion.</span></div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="field-group">
+            <input type="text" class="form-control" id="caste" placeholder=" " required>
+            <label class="floating" for="caste">Caste</label>
+            <div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please enter your caste.</span></div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="field-group">
+            <input type="text" class="form-control" id="aadhaar" placeholder=" " pattern="[0-9]{12}" maxlength="12" inputmode="numeric" autocomplete="off" required>
+            <label class="floating" for="aadhaar">Aadhaar Number</label>
+            <div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Aadhaar numbers are 12 digits &mdash; please check and re-enter.</span></div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="field-group">
+            <input type="text" class="form-control text-uppercase" id="pan" placeholder=" " maxlength="10" pattern="[A-Za-z]{5}[0-9]{4}[A-Za-z]{1}" autocomplete="off" required>
+            <label class="floating" for="pan">PAN Number</label>
+            <div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>PAN format looks like ABCDE1234F &mdash; please double-check.</span></div>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="trust-note"><i class="bi bi-lock-fill"></i>Your Aadhaar and PAN are used only to verify your registration and are shared solely with your assigned property manager.</div>
+        </div>
+        <div class="col-12">
+          <div class="field-group mt-2">
+            <textarea class="form-control" id="address" placeholder=" " autocomplete="street-address" required></textarea>
+            <label class="floating" for="address">Address</label>
+            <div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please add your address.</span></div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="field-group">
+            <input type="text" class="form-control" id="city" placeholder=" " autocomplete="address-level2" required>
+            <label class="floating" for="city">City</label>
+            <div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please enter your city.</span></div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="field-group">
+            <input type="text" class="form-control" id="district" placeholder=" " required>
+            <label class="floating" for="district">District</label>
+            <div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please enter your district.</span></div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="field-group">
+            <input type="text" class="form-control" id="state" placeholder=" " autocomplete="address-level1" required>
+            <label class="floating" for="state">State</label>
+            <div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please enter your state.</span></div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="field-group">
+            <input type="text" class="form-control" id="pincode" placeholder=" " pattern="[0-9]{6}" maxlength="6" inputmode="numeric" autocomplete="postal-code" required>
+            <label class="floating" for="pincode">PIN Code</label>
+            <div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>PIN codes are 6 digits &mdash; please check and re-enter.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="form-step" data-step="4">
+      <div class="step-title"><i class="bi bi-building"></i>Property requirement</div>
+      <div class="step-sub" id="step3Sub">Tell us more about what you need.</div>
+      <hr class="step-rule">
+      <div class="section-label">Property Type</div>
+      <div class="choice-grid" id="propertyTypeGrid">
+        <label class="choice-card"><input type="radio" name="propertyType" value="Residential" required><i class="bi bi-house"></i><span class="cc-label">Residential</span></label>
+        <label class="choice-card"><input type="radio" name="propertyType" value="Commercial" required><i class="bi bi-shop"></i><span class="cc-label">Commercial</span></label>
+        <label class="choice-card"><input type="radio" name="propertyType" value="Agricultural" required><i class="bi bi-flower1"></i><span class="cc-label">Agricultural</span></label>
+        <label class="choice-card"><input type="radio" name="propertyType" value="Plot / Land" required><i class="bi bi-map"></i><span class="cc-label">Plot / Land</span></label>
+      </div>
+      <div class="invalid-msg" id="propertyTypeError"><i class="bi bi-exclamation-circle"></i><span>Please select a property type.</span></div>
+
+      <div class="section-label mt-4">General Details</div>
+      <div class="row g-3">
+        <div class="col-md-3"><div class="field-group"><input type="number" class="form-control" id="numRooms" placeholder=" " required><label class="floating" for="numRooms">No. of Rooms</label><div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please enter the number of rooms.</span></div></div></div>
+        <div class="col-md-3"><div class="field-group"><input type="number" class="form-control" id="numHalls" placeholder=" " required><label class="floating" for="numHalls">No. of Halls</label><div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please enter the number of halls.</span></div></div></div>
+        <div class="col-md-3"><div class="field-group"><input type="number" class="form-control" id="numKitchens" placeholder=" " required><label class="floating" for="numKitchens">No. of Kitchens</label><div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please enter the number of kitchens.</span></div></div></div>
+        <div class="col-md-3"><div class="field-group"><input type="number" class="form-control" id="numRestrooms" placeholder=" " required><label class="floating" for="numRestrooms">No. of Restrooms</label><div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please enter the number of restrooms.</span></div></div></div>
+        <div class="col-md-6"><div class="field-group"><input type="number" class="form-control" id="totalSqft" placeholder=" " required><label class="floating" for="totalSqft">Total Sq Feet</label><div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please enter the total square feet.</span></div></div></div>
+        <div class="col-md-6"><div class="field-group"><select class="form-select" id="electrical" required><option value="" disabled selected></option><option>Required</option><option>Not Required</option></select><label class="floating select-label" for="electrical">Electrical</label><div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please choose an option.</span></div></div></div>
+        <div class="col-md-6"><div class="field-group"><select class="form-select" id="waterFacility" required><option value="" disabled selected></option><option>Required</option><option>Not Required</option></select><label class="floating select-label" for="waterFacility">Water Facility</label><div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please choose an option.</span></div></div></div>
+        <div class="col-md-6"><div class="field-group"><select class="form-select" id="furnished" required><option value="" disabled selected></option><option>Furnished</option><option>Semi-Furnished</option><option>Unfurnished</option></select><label class="floating select-label" for="furnished">Furnished Status</label><div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please choose an option.</span></div></div></div>
+        <div class="col-md-6"><div class="field-group"><select class="form-select" id="parking" required><option value="" disabled selected></option><option>Required</option><option>Not Required</option></select><label class="floating select-label" for="parking">Parking Status</label><div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please choose an option.</span></div></div></div>
+        <div class="col-md-6"><div class="field-group"><select class="form-select" id="constructionStatus" required><option value="" disabled selected></option><option>Ready to Move</option><option>Under Construction</option></select><label class="floating select-label" for="constructionStatus">Construction Status</label><div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please choose an option.</span></div></div></div>
+      </div>
+
+      <div id="dynamicFieldsBuy" class="dynamic-block d-none">
+        <div class="section-label">Buy &mdash; Additional Details</div>
+        <div class="row g-3">
+          <div class="col-md-6"><div class="field-group"><select class="form-select" id="loanRequired" required><option value="" disabled selected></option><option>Yes</option><option>No</option></select><label class="floating select-label" for="loanRequired">Loan Required</label><div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please choose an option.</span></div></div></div>
+          <div class="col-md-6"><div class="field-group"><select class="form-select" id="loanApproved" required><option value="" disabled selected></option><option>Yes</option><option>No</option><option>In Process</option></select><label class="floating select-label" for="loanApproved">Loan Approved</label><div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please choose an option.</span></div></div></div>
+          <div class="col-md-6"><div class="field-group"><input type="text" class="form-control" id="bankName" placeholder=" " required><label class="floating" for="bankName">Bank Name</label><div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please enter the bank name.</span></div></div></div>
+          <div class="col-md-6"><div class="field-group"><input type="text" class="form-control" id="preferredPropType" placeholder=" " required><label class="floating" for="preferredPropType">Preferred Property Type</label><div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please enter your preferred property type.</span></div></div></div>
+        </div>
+      </div>
+      <div id="dynamicFieldsLease" class="dynamic-block d-none">
+        <div class="section-label">Lease &mdash; Additional Details</div>
+        <div class="row g-3">
+          <div class="col-md-6"><div class="field-group"><input type="number" class="form-control" id="leaseBudget" placeholder=" " required><label class="floating" for="leaseBudget">Lease Budget (&#8377;)</label><div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please enter your lease budget.</span></div></div></div>
+          <div class="col-md-6"><div class="field-group"><input type="text" class="form-control" id="leaseDuration" placeholder=" " required><label class="floating" for="leaseDuration">Lease Duration</label><div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please enter the lease duration.</span></div></div></div>
+          <div class="col-md-6" id="businessTypeWrap"><div class="field-group"><input type="text" class="form-control" id="businessType" placeholder=" " required><label class="floating" for="businessType">Business Type</label><div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please enter the business type.</span></div></div></div>
+          <div class="col-md-6"><div class="field-group"><input type="text" class="form-control" id="leasePropertyRequirement" placeholder=" " required><label class="floating" for="leasePropertyRequirement">Property Requirement</label><div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please describe your property requirement.</span></div></div></div>
+        </div>
+      </div>
+      <div id="dynamicFieldsTenantRental" class="dynamic-block d-none">
+        <div class="section-label">Tenant Rental &mdash; Additional Details</div>
+        <div class="row g-3">
+          <div class="col-md-6"><div class="field-group"><input type="number" class="form-control" id="tenantMonthlyRentBudget" placeholder=" " required><label class="floating" for="tenantMonthlyRentBudget">Monthly Rent Budget (&#8377;)</label><div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please enter your monthly rent budget.</span></div></div></div>
+          <div class="col-md-6"><div class="field-group"><input type="text" class="form-control" id="tenantPreferredArea" placeholder=" " required><label class="floating" for="tenantPreferredArea">Preferred Area</label><div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please enter your preferred area.</span></div></div></div>
+          <div class="col-md-4"><div class="field-group"><input type="number" class="form-control" id="tenantFamilyMembers" placeholder=" " required><label class="floating" for="tenantFamilyMembers">Family Members</label><div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please enter the number of family members.</span></div></div></div>
+          <div class="col-md-4"><div class="field-group"><select class="form-select" id="tenantPets" required><option value="" disabled selected></option><option>Yes</option><option>No</option></select><label class="floating select-label" for="tenantPets">Pets</label><div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please choose an option.</span></div></div></div>
+          <div class="col-md-4"><div class="field-group"><input type="date" class="form-control" id="tenantMoveInDate" placeholder=" " required><label class="floating select-label" for="tenantMoveInDate">Move-in Date</label><div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please select a move-in date.</span></div></div></div>
+        </div>
+      </div>
+      <div id="dynamicFieldsProperty" class="dynamic-block d-none">
+        <div class="section-label">Property &mdash; List Your Own Property</div>
+        <div class="step-sub" style="margin-bottom:14px;">You own this property and want to give it out. Pick the Property Type above (Residential/Commercial/Agricultural/Plot &amp; Land) and choose how you want to give it below &mdash; covers House for Sale, House for Rent, House for Lease, Land for Sale, Land for Rent, Land for Lease, and every other combination.</div>
+        <div class="choice-grid" id="propPurposeGrid">
+          <label class="choice-card"><input type="radio" name="propPurpose" value="For Sale" required><i class="bi bi-tag"></i><span class="cc-label">Give for Sale</span></label>
+          <label class="choice-card"><input type="radio" name="propPurpose" value="For Rent" required><i class="bi bi-key"></i><span class="cc-label">Give for Rent</span></label>
+          <label class="choice-card"><input type="radio" name="propPurpose" value="For Lease" required><i class="bi bi-file-earmark-text"></i><span class="cc-label">Give for Lease</span></label>
+        </div>
+        <div class="invalid-msg" id="propPurposeError"><i class="bi bi-exclamation-circle"></i><span>Please choose how you want to give this property.</span></div>
+        <div class="row g-3 mt-1">
+          <div class="col-md-6"><div class="field-group"><input type="text" class="form-control" id="propOwnLocation" placeholder=" " required><label class="floating" for="propOwnLocation">Property Location</label><div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please enter the property location.</span></div></div></div>
+          <div class="col-md-6"><div class="field-group"><input type="text" class="form-control" id="propOwnSize" placeholder=" " required><label class="floating" for="propOwnSize">Property Size</label><div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please enter the property size.</span></div></div></div>
+          <div class="col-md-6"><div class="field-group"><input type="number" class="form-control" id="propOwnAmount" placeholder=" " required><label class="floating" for="propOwnAmount" id="propOwnAmountLabel">Expected Amount (&#8377;)</label><div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please enter the expected amount.</span></div></div></div>
+          <div class="col-md-6"><div class="field-group"><input type="text" class="form-control" id="propOwnAge" placeholder=" " required><label class="floating" for="propOwnAge">Property Age</label><div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please enter the property age.</span></div></div></div>
+          <div class="col-12"><div class="field-group"><textarea class="form-control" id="propOwnershipDetails" placeholder=" " required></textarea><label class="floating" for="propOwnershipDetails">Ownership Details</label><div class="invalid-msg"><i class="bi bi-exclamation-circle"></i><span>Please enter the ownership details.</span></div></div></div>
+        </div>
+
+        <div class="section-label mt-3">Property Photos &amp; Video</div>
+        <div class="step-sub" style="margin-bottom:6px;">Minimum <strong>5 photos</strong> and <strong>1 video</strong> required. Tap the <strong>+</strong> tile to add more.</div>
+        <div class="media-grid" id="propMediaGrid">
+          <label class="media-add-tile" id="propImageAddTile">
+            <i class="bi bi-plus-lg"></i><span>Add Photo</span>
+            <input type="file" accept=".jpg,.jpeg,.png,.webp" id="propImageInput" style="display:none;">
+          </label>
+          <label class="media-add-tile" id="propVideoAddTile">
+            <i class="bi bi-camera-video"></i><span>Add Video</span>
+            <input type="file" accept=".mp4,.mov,.webm" id="propVideoInput" style="display:none;">
+          </label>
+        </div>
+        <div class="media-note" id="propMediaNote">0 / 5 photos &middot; 0 / 1 video added</div>
+      </div>
+
+      <div class="field-group mt-2">
+        <textarea class="form-control" id="additionalRequirements" placeholder=" "></textarea>
+        <label class="floating" for="additionalRequirements">Additional Requirements <span class="field-optional-tag">(optional)</span></label>
+      </div>
+    </div>
+
+    <!-- STEP 5 -->
+    <div class="form-step" data-step="5">
+      <div class="step-title"><i class="bi bi-file-earmark-arrow-up"></i>Upload documents</div>
+      <div class="step-sub">JPG, JPEG, PNG or PDF. Maximum file size 10 MB per document.</div>
+      <hr class="step-rule">
+      <div class="row g-3" id="uploadGrid"></div>
+    </div>
+
+    <!-- STEP 6 -->
+    <div class="form-step" data-step="6">
+      <div class="step-title"><i class="bi bi-credit-card"></i>Advance payment</div>
+      <div class="step-sub">Complete your advance payment to confirm your registration.</div>
+      <hr class="step-rule">
+
+      <div class="section-label">Terms &amp; Conditions</div>
+      <div class="tnc-box">
+        <i class="bi bi-info-circle"></i>
+        <div>This advance payment is <strong>non-refundable</strong> once paid. After payment, we will share <strong>up to 2 matches</strong> for your requirement, and one of our <strong>team representatives will personally contact you to guide you</strong> through the next steps.</div>
+      </div>
+
+      <div class="pay-amount-display">
+        <div class="pa-label">Amount Payable</div>
+        <div class="pa-value font-mono"><span id="payAmount">&#8377;0</span></div>
+        <div class="text-muted-custom" style="font-size:0.8rem;" id="payServiceLabel">Select a service first</div>
+      </div>
+      <div class="row g-2">
+        <div class="col-6"><button type="button" class="pay-btn" id="gpayBtn"><i class="bi bi-google"></i>Google Pay / UPI</button></div>
+        <div class="col-6"><button type="button" class="pay-btn" id="paypalBtn"><i class="bi bi-paypal"></i>PayPal</button></div>
+      </div>
+      <div class="text-center">
+        <div class="field-hint mt-2">Or scan the QR code below</div>
+        <div class="qr-box" id="qrBox">QR CODE<br>PLACEHOLDER</div>
+      </div>
+      <div class="section-label">Payment Proof</div>
+      <div class="upload-tile" id="paymentUploadTile">
+        <input type="file" id="paymentScreenshot" accept=".jpg,.jpeg,.png,.pdf" required>
+        <i class="bi bi-cloud-arrow-up"></i>
+        <div class="ut-title">Payment Screenshot</div>
+        <div class="ut-req">REQUIRED &mdash; form cannot be submitted without this</div>
+        <div class="ut-status">Tap to upload, or drag a file here</div>
+        <button type="button" class="ut-remove d-none"><i class="bi bi-x-circle"></i> Remove</button>
+      </div>
+      <div class="invalid-msg" id="paymentUploadError"><i class="bi bi-exclamation-circle"></i><span>Please upload your payment screenshot before submitting.</span></div>
+
+      <div class="section-label">Declaration</div>
+      <div class="declare-box">
+        <input type="checkbox" id="declaration" required>
+        <label for="declaration" style="font-size:0.88rem; cursor:pointer;">I confirm that all the information provided is true and correct.</label>
+      </div>
+      <div class="invalid-msg" id="declarationError"><i class="bi bi-exclamation-circle"></i><span>Please accept the declaration to submit your registration.</span></div>
+    </div>
+
+  </form>
+</div>
+
+<div class="bottom-bar">
+  <div class="container d-flex gap-2">
+    <button type="button" class="btn-ghost" id="backBtn" style="flex:0 0 auto;"><i class="bi bi-arrow-left"></i> <span class="btn-full-text">Back</span></button>
+    <button type="button" class="btn-premium flex-fill" id="nextBtn">Continue <i class="bi bi-arrow-right"></i></button>
+    <button type="button" class="btn-premium flex-fill d-none" id="submitBtn"><i class="bi bi-check2-circle"></i> Submit Registration</button>
+  </div>
+</div>
+
+<div class="overlay" id="loadingOverlay">
+  <div class="text-center">
+    <div class="loader-ring mx-auto mb-3"></div>
+    <div class="text-muted-custom font-mono" style="font-size:0.8rem;">Submitting your registration&hellip;</div>
+  </div>
+</div>
+
+<div class="overlay" id="successOverlay">
+  <div class="success-card paper-card">
+    <div class="success-stamp"><i class="bi bi-check-lg"></i></div>
+    <h3 class="font-display mb-2">Registration submitted successfully.</h3>
+    <p class="text-muted-custom mb-4">Our property manager will contact you shortly.</p>
+    <div class="ticket-id font-mono text-accent mb-3" id="successRefId"></div>
+    <a href="./matches.html" class="btn-premium w-100 d-block text-center mb-2" style="text-decoration:none;"><i class="bi bi-search-heart"></i> View My Matches</a>
+    <button type="button" class="btn-premium w-100" id="closeSuccessBtn">Done</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+  /* Point this at your deployed Property CRM install, e.g. https://crm.example.com/PropertyCRM */
+  const IS_LOCAL_DEV = ['localhost', '127.0.0.1'].includes(location.hostname);
+  const PROPERTYCRM_API_URL = IS_LOCAL_DEV
+    ? 'http://localhost/PropertyCRM/api/public/register.php'   // ← edit if your local PropertyCRM folder name/port differs
+    : 'https://mediumslateblue-butterfly-616701.hostingersite.com/api/public/register.php';
+  const PROPERTYCRM_API_CONFIGURED = true; // set to true once the URL above is live
+
+  // Until PROPERTYCRM_API_CONFIGURED is true, a completed registration
+  // (mobile number + preferences + advance-payment proof) is saved into
+  // this browser's local storage instead. That's what lets the customer
+  // log in with their mobile number on "My Matches" (matches.html) and
+  // see properties that fit what they registered for.
+  const REG_STORAGE_KEY = 'bsrp_registrations'; // must match matches.html
+  "use strict";
+
+  /* Turn off the browser's red spellcheck squiggly on every text field —
+     names, addresses, PAN etc. constantly get flagged as "misspelled",
+     which looked messy. This does not affect font colour. */
+  document.querySelectorAll('input[type="text"], textarea').forEach(function(el){
+    el.setAttribute('spellcheck', 'false');
+  });
+
+  /* =====================================================================
+     ★★★ ONLY EDIT THIS ONE BLOCK — nowhere else in the file needed ★★★
+     Put your real UPI ID and PayPal username below. The amount (₹2,000
+     etc.) is filled in automatically based on the service the user picks —
+     you never hardcode an amount here.
+     ===================================================================== */
+  const PAYMENT_CONFIG = {
+    upiId: '9043140646@okbizaxis',                          // ✅ your real UPI ID (from your Google Pay QR)
+    payeeName: 'Software Development And Graphic Design',   // shown in the payer's UPI app
+    paypalUsername: 'YOUR_PAYPAL_USERNAME'  // from paypal.me/YOUR_PAYPAL_USERNAME (or your PayPal email)
+  };
+  /* ===================================================================== */
+
+  /* ===== Theme toggle ===== */
+  let update3DTheme = null; // set later once the 3D hero scene initializes
+  const root = document.documentElement;
+  const lightBtn = document.getElementById('lightBtn');
+  const darkBtn = document.getElementById('darkBtn');
+  function setTheme(mode){
+    root.setAttribute('data-theme', mode);
+    lightBtn.classList.toggle('active', mode==='light');
+    darkBtn.classList.toggle('active', mode==='dark');
+    if(typeof update3DTheme === 'function') update3DTheme();
+    try { localStorage.setItem('bsrp_theme', mode); } catch(e){}
+  }
+  lightBtn.addEventListener('click', ()=>{ setTheme('light'); requestAnimationFrame(setMastheadHeight); });
+  darkBtn.addEventListener('click', ()=>{ setTheme('dark'); requestAnimationFrame(setMastheadHeight); });
+  // Default is Dark for every new visitor; once someone picks a theme here,
+  // that choice is remembered (via localStorage) for their next visit/registration.
+  let savedTheme = 'dark';
+  try { savedTheme = localStorage.getItem('bsrp_theme') || 'dark'; } catch(e){}
+  setTheme(savedTheme);
+
+  /* Keep the sticky progress bar pinned exactly below the masthead, whatever its height */
+  function setMastheadHeight(){
+    const mh = document.querySelector('.masthead');
+    if(mh) document.documentElement.style.setProperty('--masthead-h', mh.offsetHeight + 'px');
+  }
+  window.addEventListener('load', setMastheadHeight);
+  window.addEventListener('resize', setMastheadHeight);
+  setMastheadHeight();
+
+  /* ===== Ambient 2D bubble field ===== */
+  const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  (function initBubbles(){
+    const field = document.getElementById('bubbleField');
+    if(!field || prefersReducedMotion) return;
+    const count = window.innerWidth < 640 ? 8 : 14;
+    for(let i=0;i<count;i++){
+      const b = document.createElement('div');
+      b.className = 'bubble';
+      const size = 24 + Math.random()*90;
+      const left = Math.random()*100;
+      const duration = 16 + Math.random()*18;
+      const delay = Math.random()*-30;
+      const drift = (Math.random()*80 - 40) + 'px';
+      const opacity = (0.12 + Math.random()*0.16).toFixed(2);
+      b.style.width = size + 'px';
+      b.style.height = size + 'px';
+      b.style.left = left + '%';
+      b.style.animationDuration = duration + 's';
+      b.style.animationDelay = delay + 's';
+      b.style.setProperty('--drift', drift);
+      b.style.setProperty('--bubble-op', opacity);
+      field.appendChild(b);
+    }
+  })();
+
+  /* ===== 3D hero scene (Three.js) — subtle rotating purple geometry, disabled on reduced-motion ===== */
+  (function initHero3D(){
+    const canvas = document.getElementById('heroCanvas');
+    if(!canvas || typeof THREE === 'undefined') return;
+
+    const hero = canvas.closest('.hero');
+    const isSmall = window.innerWidth < 640;
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha:true, antialias:true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
+    camera.position.z = 9;
+
+    function currentAccentColor(){
+      const css = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+      return new THREE.Color(css || '#9333EA');
+    }
+
+    const shapeCount = isSmall ? 3 : 6;
+    const shapes = [];
+    const geoTypes = [
+      () => new THREE.IcosahedronGeometry(1, 0),
+      () => new THREE.OctahedronGeometry(1, 0),
+      () => new THREE.TorusGeometry(0.7, 0.22, 8, 24)
+    ];
+    for(let i=0;i<shapeCount;i++){
+      const geo = geoTypes[i % geoTypes.length]();
+      const mat = new THREE.MeshBasicMaterial({ color: currentAccentColor(), wireframe:true, transparent:true, opacity:0.55 });
+      const mesh = new THREE.Mesh(geo, mat);
+      const scale = 0.5 + Math.random()*0.9;
+      mesh.scale.setScalar(scale);
+      mesh.position.set((Math.random()-0.5)*10, (Math.random()-0.5)*6, (Math.random()-0.5)*4);
+      mesh.userData.spin = { x:(Math.random()-0.5)*0.006, y:(Math.random()-0.5)*0.008 };
+      mesh.userData.floatOffset = Math.random()*Math.PI*2;
+      scene.add(mesh);
+      shapes.push(mesh);
+    }
+
+    const particleCount = isSmall ? 60 : 140;
+    const positions = new Float32Array(particleCount*3);
+    for(let i=0;i<particleCount;i++){
+      positions[i*3] = (Math.random()-0.5)*16;
+      positions[i*3+1] = (Math.random()-0.5)*9;
+      positions[i*3+2] = (Math.random()-0.5)*6;
+    }
+    const pGeo = new THREE.BufferGeometry();
+    pGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    const pMat = new THREE.PointsMaterial({ color: currentAccentColor(), size:0.045, transparent:true, opacity:0.65 });
+    const points = new THREE.Points(pGeo, pMat);
+    scene.add(points);
+
+    function resize(){
+      const w = hero ? hero.clientWidth : window.innerWidth;
+      const h = hero ? hero.clientHeight : 400;
+      if(w<=0||h<=0) return;
+      renderer.setSize(w, h, false);
+      camera.aspect = w/h;
+      camera.updateProjectionMatrix();
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    update3DTheme = function(){
+      const c = currentAccentColor();
+      shapes.forEach(s=> s.material.color.copy(c));
+      pMat.color.copy(c);
+    };
+
+    let running = true;
+    document.addEventListener('visibilitychange', ()=>{ running = !document.hidden; });
+
+    let clock = 0;
+    function animate(){
+      requestAnimationFrame(animate);
+      if(!running) return;
+      clock += 0.01;
+      shapes.forEach(s=>{
+        s.rotation.x += s.userData.spin.x;
+        s.rotation.y += s.userData.spin.y;
+        s.position.y += Math.sin(clock + s.userData.floatOffset) * 0.0025;
+      });
+      points.rotation.y += 0.0006;
+      renderer.render(scene, camera);
+    }
+    if(prefersReducedMotion){ renderer.render(scene, camera); }
+    else { animate(); }
+  })();
+
+  /* ===== Dateline ===== */
+  document.getElementById('datelineRight').textContent = new Date().toLocaleDateString('en-IN', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+
+  /* ===== Toast system ===== */
+  const toastStack = document.getElementById('toastStack');
+  const toastIcons = { success:'bi-check-circle-fill', error:'bi-x-circle-fill', info:'bi-info-circle-fill' };
+  function showToast(message, type, duration){
+    type = type || 'info'; duration = duration || 4200;
+    const el = document.createElement('div');
+    el.className = 'toast-item ' + type;
+    el.innerHTML = `<i class="bi ${toastIcons[type]}"></i><span>${message}</span><button type="button" class="toast-close" aria-label="Dismiss"><i class="bi bi-x"></i></button>`;
+    toastStack.appendChild(el);
+    const remove = () => {
+      el.classList.add('leaving');
+      setTimeout(()=> el.remove(), 250);
+    };
+    el.querySelector('.toast-close').addEventListener('click', remove);
+    setTimeout(remove, duration);
+  }
+
+  const state = { step:1, totalSteps:6, service:null, fee:0 };
+  const regId = 'BRP-' + Math.floor(100000 + Math.random()*900000);
+
+  const uploadDefs = {
+    Buy:[{id:'up_aadhaar', title:'Aadhaar', required:true},{id:'up_pan', title:'PAN', required:true},{id:'up_loan', title:'Bank Loan Approval', required:false}],
+    Lease:[{id:'up_aadhaar', title:'Aadhaar', required:true},{id:'up_pan', title:'PAN', required:true}],
+    TenantRental:[{id:'up_aadhaar', title:'Aadhaar', required:true},{id:'up_companyid', title:'Office ID / Employee ID', required:true},{id:'up_pan', title:'PAN', required:true},{id:'up_salary', title:'Payslip', required:true}],
+    Property:[{id:'up_aadhaar', title:'Aadhaar', required:true},{id:'up_pan', title:'PAN', required:false}]
+  };
+  const uploadIcons = {
+    up_photo:'bi-image', up_aadhaar:'bi-person-badge', up_pan:'bi-credit-card-2-front', up_loan:'bi-bank', up_propdocs:'bi-file-earmark-text',
+    up_ec:'bi-file-earmark-ruled', up_patta:'bi-file-earmark-check', up_chitta:'bi-file-earmark-check',
+    up_salary:'bi-cash-stack', up_companyid:'bi-person-workspace', up_employment:'bi-briefcase',
+    up_advance:'bi-receipt'
+  };
+  const serviceIcons = { Buy:'bi-key', Lease:'bi-file-earmark-text', TenantRental:'bi-house-check', Property:'bi-buildings' };
+
+  const $ = (sel, ctx) => (ctx||document).querySelector(sel);
+  const $$ = (sel, ctx) => Array.from((ctx||document).querySelectorAll(sel));
+
+  /* ===== Friendlier input behaviour: digits-only fields, PAN auto-uppercase, same-as-mobile ===== */
+  ['mobileNumber','whatsappNumber','aadhaar','pincode','familyMembers'].forEach(id=>{
+    const el = $('#'+id);
+    if(!el) return;
+    el.addEventListener('input', ()=>{ el.value = el.value.replace(/[^0-9]/g,''); });
+  });
+  const panEl = $('#pan');
+  if(panEl) panEl.addEventListener('input', ()=>{
+    const pos = panEl.selectionStart;
+    panEl.value = panEl.value.toUpperCase();
+    panEl.setSelectionRange(pos, pos);
+  });
+  const sameAsMobile = $('#sameAsMobile');
+  const mobileEl = $('#mobileNumber');
+  const whatsappEl = $('#whatsappNumber');
+  if(sameAsMobile){
+    sameAsMobile.addEventListener('change', ()=>{
+      if(sameAsMobile.checked){
+        whatsappEl.value = mobileEl.value;
+        whatsappEl.setAttribute('readonly','readonly');
+        whatsappEl.dispatchEvent(new Event('input'));
+      } else {
+        whatsappEl.removeAttribute('readonly');
+      }
+    });
+    mobileEl.addEventListener('input', ()=>{ if(sameAsMobile.checked) whatsappEl.value = mobileEl.value; });
+  }
+
+  const ticketIdDisplay = $('#ticketIdDisplay');
+  const ticketStamp = $('#ticketStamp');
+  const ticketServiceName = $('#ticketServiceName');
+  const ticketFee = $('#ticketFee');
+  const ticketName = $('#ticketName');
+  const ticketStepCount = $('#ticketStepCount');
+  const ticketProgressFill = $('#ticketProgressFill');
+
+  function updateTicket(){
+    if(state.service){
+      ticketIdDisplay.textContent = 'No. ' + regId;
+      ticketStamp.textContent = state.service.toUpperCase();
+      if(ticketServiceName){
+        ticketServiceName.textContent = state.service + ' Property Registration';
+        ticketServiceName.classList.remove('placeholder');
+      }
+      ticketFee.textContent = '₹' + state.fee.toLocaleString('en-IN');
+    } else {
+      ticketIdDisplay.textContent = 'No. BRP-PENDING';
+      ticketStamp.textContent = 'PENDING';
+      if(ticketServiceName){
+        ticketServiceName.textContent = 'Select a service to begin';
+        ticketServiceName.classList.add('placeholder');
+      }
+      ticketFee.textContent = '₹—';
+    }
+    const nameVal = $('#fullName') ? $('#fullName').value.trim() : '';
+    ticketName.textContent = nameVal ? nameVal : '—';
+    ticketStepCount.textContent = state.step + ' / ' + state.totalSteps;
+    ticketProgressFill.style.width = ((state.step-1) / (state.totalSteps-1) * 100) + '%';
+  }
+
+  $$('#serviceGrid .choice-card').forEach(card=>{    card.addEventListener('click', ()=>{
+      $$('#serviceGrid .choice-card').forEach(c=>c.classList.remove('selected'));
+      card.classList.add('selected');
+      card.querySelector('input').checked = true;
+      state.service = card.dataset.service;
+      state.fee = parseInt(card.dataset.fee,10);
+      $('#serviceTypeError').classList.remove('force-show');
+      $('#serviceTypeError').style.display='none';
+      buildUploadGrid();
+      buildDynamicFields();
+      updateTicket();
+      updatePaymentStep();
+      updateStep3Sub();
+    });
+  });
+
+  function updateStep3Sub(){
+    $('#step3Sub').textContent = state.service ? `Tell us more about your ${state.service.toLowerCase()} requirement.` : 'Tell us more about what you need.';
+  }
+
+  document.addEventListener('click', (e)=>{
+    const card = e.target.closest('.choice-card');
+    if(!card || card.closest('#serviceGrid')) return;
+    const group = card.closest('.choice-grid');
+    if(!group) return;
+    $$('.choice-card', group).forEach(c=>c.classList.remove('selected'));
+    card.classList.add('selected');
+    const input = card.querySelector('input');
+    if(input) input.checked = true;
+  });
+
+  function buildDynamicFields(){
+    ['Buy','Lease','TenantRental','Property'].forEach(s=> $('#dynamicFields'+s).classList.add('d-none'));
+    if(state.service) $('#dynamicFields'+state.service).classList.remove('d-none');
+    updateBusinessTypeVisibility();
+  }
+
+  function updateBusinessTypeVisibility(){
+    const wrap = $('#businessTypeWrap');
+    if(!wrap) return;
+    const propType = document.querySelector('input[name="propertyType"]:checked');
+    const show = state.service === 'Lease' && propType && propType.value === 'Commercial';
+    wrap.classList.toggle('d-none', !show);
+    if(!show){
+      const el = $('#businessType');
+      if(el){ el.value = ''; setFieldInvalid(el, false); }
+    }
+  }
+
+  document.addEventListener('click', (e)=>{
+    if(e.target.closest('#propertyTypeGrid .choice-card')) updateBusinessTypeVisibility();
+  });
+
+  $$('input[name="propPurpose"]').forEach(r=>{
+    r.addEventListener('change', ()=>{
+      const lbl = $('#propOwnAmountLabel');
+      if(!lbl) return;
+      if(r.value === 'For Rent') lbl.textContent = 'Expected Monthly Rent (₹)';
+      else if(r.value === 'For Lease') lbl.textContent = 'Expected Lease Amount (₹)';
+      else lbl.textContent = 'Expected Sale Price (₹)';
+    });
+  });
+
+  /* ===== Property media gallery (photos + video, min 5 images + 1 video) ===== */
+  const MIN_PROP_IMAGES = 5;
+  const MAX_PROP_IMAGES = 20;
+  let propImages = [];
+  let propVideo = null;
+
+  const propMediaGrid = $('#propMediaGrid');
+  const propImageAddTile = $('#propImageAddTile');
+  const propVideoAddTile = $('#propVideoAddTile');
+  const propImageInput = $('#propImageInput');
+  const propVideoInput = $('#propVideoInput');
+  const propMediaNote = $('#propMediaNote');
+
+  function renderMediaGrid(){
+    $$('.media-tile', propMediaGrid).forEach(t=>{
+      URL.revokeObjectURL(t.dataset.url || '');
+      t.remove();
+    });
+
+    propImages.forEach((file, idx)=>{
+      const tile = document.createElement('div');
+      tile.className = 'media-tile';
+      const url = URL.createObjectURL(file);
+      tile.dataset.url = url;
+      tile.innerHTML = `<img src="${url}" alt="Property photo ${idx+1}"><span class="mt-badge">Photo</span><button type="button" class="mt-remove" aria-label="Remove photo">&times;</button>`;
+      tile.querySelector('.mt-remove').addEventListener('click', ()=>{
+        propImages.splice(idx,1);
+        renderMediaGrid();
+      });
+      propMediaGrid.insertBefore(tile, propImageAddTile);
+    });
+
+    let videoTile = null;
+    if(propVideo){
+      videoTile = document.createElement('div');
+      videoTile.className = 'media-tile';
+      const url = URL.createObjectURL(propVideo);
+      videoTile.dataset.url = url;
+      videoTile.innerHTML = `<video src="${url}" muted></video><span class="mt-badge">Video</span><button type="button" class="mt-remove" aria-label="Remove video">&times;</button>`;
+      videoTile.querySelector('.mt-remove').addEventListener('click', ()=>{
+        propVideo = null;
+        renderMediaGrid();
+      });
+      propMediaGrid.insertBefore(videoTile, propVideoAddTile);
+    }
+
+    propImageAddTile.style.display = propImages.length >= MAX_PROP_IMAGES ? 'none' : 'flex';
+    propVideoAddTile.style.display = propVideo ? 'none' : 'flex';
+
+    const imgOk = propImages.length >= MIN_PROP_IMAGES;
+    const vidOk = !!propVideo;
+    propMediaNote.textContent = `${propImages.length} / ${MIN_PROP_IMAGES} photos · ${propVideo ? 1 : 0} / 1 video added`;
+    propMediaNote.classList.toggle('err', !(imgOk && vidOk));
+  }
+
+  if(propImageInput){
+    propImageInput.addEventListener('change', ()=>{
+      const files = Array.from(propImageInput.files || []);
+      files.forEach(f=>{ if(propImages.length < MAX_PROP_IMAGES) propImages.push(f); });
+      propImageInput.value = '';
+      renderMediaGrid();
+    });
+  }
+  if(propVideoInput){
+    propVideoInput.addEventListener('change', ()=>{
+      const f = propVideoInput.files && propVideoInput.files[0];
+      if(f) propVideo = f;
+      propVideoInput.value = '';
+      renderMediaGrid();
+    });
+  }
+  renderMediaGrid();
+
+  function formatBytes(bytes){
+    if(bytes < 1024) return bytes + ' B';
+    if(bytes < 1024*1024) return (bytes/1024).toFixed(0) + ' KB';
+    return (bytes/(1024*1024)).toFixed(1) + ' MB';
+  }
+
+  const galleryFiles = {}; // { [defId]: File[] }
+  const GALLERY_MAX = 20;
+
+  function buildUploadGrid(){
+    const grid = $('#uploadGrid');
+    grid.innerHTML = '';
+    if(!state.service) return;
+    uploadDefs[state.service].forEach(def=>{
+      const col = document.createElement('div');
+      col.className = def.gallery ? 'col-12' : 'col-md-6';
+      if(def.gallery){
+        galleryFiles[def.id] = galleryFiles[def.id] || [];
+        col.innerHTML = `
+          <div class="gallery-block" data-gallery-id="${def.id}" data-min="${def.min||1}">
+            <div class="ut-title">${def.title} <span class="ut-req">${def.required ? 'REQUIRED' : 'OPTIONAL'}</span></div>
+            <div class="ut-status" style="margin-bottom:8px;">Minimum ${def.min||1} photos &mdash; tap + to add each one.</div>
+            <div class="media-grid" id="galleryGrid_${def.id}">
+              <label class="media-add-tile" id="galleryAddTile_${def.id}">
+                <i class="bi bi-plus-lg"></i><span>Add Photo</span>
+                <input type="file" accept=".jpg,.jpeg,.png,.webp" id="galleryInput_${def.id}" style="display:none;">
+              </label>
+            </div>
+            <div class="media-note" id="galleryNote_${def.id}">0 / ${def.min||1} photos added</div>
+          </div>`;
+        grid.appendChild(col);
+      } else {
+        col.innerHTML = `
+          <div class="upload-tile" data-upload-id="${def.id}" data-required="${def.required}">
+            <input type="file" id="${def.id}" accept=".jpg,.jpeg,.png,.pdf">
+            <i class="bi ${uploadIcons[def.id]||'bi-file-earmark'}"></i>
+            <div class="ut-title">${def.title}</div>
+            <div class="ut-req">${def.required ? 'REQUIRED' : 'OPTIONAL'}</div>
+            <div class="ut-status">Tap to upload, or drag a file here</div>
+            <button type="button" class="ut-remove d-none"><i class="bi bi-x-circle"></i> Remove</button>
+          </div>`;
+        grid.appendChild(col);
+      }
+    });
+    attachUploadListeners();
+    uploadDefs[state.service].filter(d=>d.gallery).forEach(def=> wireGalleryUpload(def));
+  }
+
+  function wireGalleryUpload(def){
+    const grid = $('#galleryGrid_'+def.id);
+    const addTile = $('#galleryAddTile_'+def.id);
+    const input = $('#galleryInput_'+def.id);
+    const note = $('#galleryNote_'+def.id);
+    const min = def.min || 1;
+
+    function render(){
+      $$('.media-tile', grid).forEach(t=>{ URL.revokeObjectURL(t.dataset.url||''); t.remove(); });
+      (galleryFiles[def.id]||[]).forEach((file, idx)=>{
+        const tile = document.createElement('div');
+        tile.className = 'media-tile';
+        const url = URL.createObjectURL(file);
+        tile.dataset.url = url;
+        tile.innerHTML = `<img src="${url}" alt="Photo ${idx+1}"><button type="button" class="mt-remove" aria-label="Remove photo">&times;</button>`;
+        tile.querySelector('.mt-remove').addEventListener('click', ()=>{
+          galleryFiles[def.id].splice(idx,1);
+          render();
+        });
+        grid.insertBefore(tile, addTile);
+      });
+      addTile.style.display = (galleryFiles[def.id]||[]).length >= GALLERY_MAX ? 'none' : 'flex';
+      const ok = (galleryFiles[def.id]||[]).length >= min;
+      note.textContent = `${(galleryFiles[def.id]||[]).length} / ${min} photos added`;
+      note.classList.toggle('err', !ok);
+      const block = grid.closest('.gallery-block');
+      if(block) block.classList.toggle('is-invalid', !ok && block.dataset.touched === '1');
+    }
+
+    input.addEventListener('change', ()=>{
+      const files = Array.from(input.files || []);
+      files.forEach(f=>{ if((galleryFiles[def.id]||[]).length < GALLERY_MAX) galleryFiles[def.id].push(f); });
+      input.value = '';
+      const block = grid.closest('.gallery-block');
+      if(block) block.dataset.touched = '1';
+      render();
+    });
+
+    render();
+  }
+
+  function wireUploadTile(tile, extraOnSet){
+    const inp = tile.querySelector('input[type=file]');
+    const status = tile.querySelector('.ut-status');
+    const removeBtn = tile.querySelector('.ut-remove');
+
+    function setFile(file){
+      if(!file){
+        status.textContent = 'Tap to upload, or drag a file here';
+        tile.classList.remove('filled');
+        if(removeBtn) removeBtn.classList.add('d-none');
+        return;
+      }
+      if(file.size > 10*1024*1024){
+        status.textContent = 'File too large (max 10 MB)';
+        tile.classList.remove('filled');
+        inp.value = '';
+        showToast(`"${file.name}" is over 10 MB. Please choose a smaller file.`, 'error');
+        return;
+      }
+      status.textContent = `${file.name} · ${formatBytes(file.size)}`;
+      tile.classList.add('filled');
+      tile.classList.remove('is-invalid');
+      if(removeBtn) removeBtn.classList.remove('d-none');
+      if(extraOnSet) extraOnSet();
+    }
+
+    inp.addEventListener('change', function(){ setFile(this.files && this.files[0]); });
+
+    if(removeBtn){
+      removeBtn.addEventListener('click', (e)=>{
+        e.preventDefault(); e.stopPropagation();
+        inp.value = '';
+        setFile(null);
+      });
+    }
+
+    tile.addEventListener('dragover', (e)=>{ e.preventDefault(); tile.classList.add('drag-over'); });
+    tile.addEventListener('dragleave', ()=> tile.classList.remove('drag-over'));
+    tile.addEventListener('drop', (e)=>{
+      e.preventDefault();
+      tile.classList.remove('drag-over');
+      const file = e.dataTransfer.files && e.dataTransfer.files[0];
+      if(file){
+        try{
+          const dt = new DataTransfer();
+          dt.items.add(file);
+          inp.files = dt.files;
+        }catch(err){ /* DataTransfer construction unsupported — fall back to reading only */ }
+        setFile(file);
+      }
+    });
+  }
+
+  function attachUploadListeners(){
+    $$('#uploadGrid .upload-tile').forEach(tile=> wireUploadTile(tile));
+  }
+
+  wireUploadTile($('#paymentUploadTile'), ()=>{ $('#paymentUploadError').style.display = 'none'; });
+
+  /* =========================================================================
+     STATIC UPI + PAYPAL LINK BUILDERS (no API/merchant account required)
+     ========================================================================= */
+  function isConfigured(value, placeholderPrefix){
+    return value && value.indexOf(placeholderPrefix) !== 0;
+  }
+
+  function buildUpiLink(){
+    const amount = state.fee || 0;
+    const note = (state.service || 'Property') + ' Registration Advance - ' + regId;
+    const params = new URLSearchParams({
+      pa: PAYMENT_CONFIG.upiId,
+      pn: PAYMENT_CONFIG.payeeName,
+      am: String(amount),
+      cu: 'INR',
+      tn: note
+    });
+    return 'upi://pay?' + params.toString();
+  }
+
+  function buildPaypalLink(){
+    const amount = state.fee || 0;
+    let handle = PAYMENT_CONFIG.paypalUsername.trim();
+    handle = handle.replace(/^https?:\/\/(www\.)?paypal\.me\//i, '').replace(/^paypal\.me\//i, '');
+    return `https://paypal.me/${handle}${amount ? '/' + amount : ''}`;
+  }
+
+  const qrCache = {}; // avoid re-downloading the QR image if the amount hasn't changed
+  function updateQrCode(){
+    const qrBox = $('#qrBox');
+    if(!qrBox) return;
+    if(!state.service || !isConfigured(PAYMENT_CONFIG.upiId, 'YOUR_UPI_ID')){
+      qrBox.innerHTML = 'QR CODE<br>PLACEHOLDER';
+      return;
+    }
+    const upiLink = buildUpiLink();
+    if(qrCache[upiLink]){
+      qrBox.innerHTML = qrCache[upiLink];
+      return;
+    }
+    const qrImgUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + encodeURIComponent(upiLink);
+    const html = `<img src="${qrImgUrl}" alt="Scan to pay via UPI" style="width:100%;height:100%;object-fit:contain;" loading="lazy">`;
+    qrCache[upiLink] = html;
+    qrBox.innerHTML = html;
+  }
+
+  $('#gpayBtn').addEventListener('click', ()=>{
+    if(!state.service){ showToast('Please select a service first (Step 1).', 'error'); return; }
+    if(!isConfigured(PAYMENT_CONFIG.upiId, 'YOUR_UPI_ID')){
+      showToast('Add your real UPI ID inside PAYMENT_CONFIG in the code before going live.', 'error');
+      return;
+    }
+    window.location.href = buildUpiLink();
+  });
+
+  $('#paypalBtn').addEventListener('click', ()=>{
+    if(!state.service){ showToast('Please select a service first (Step 1).', 'error'); return; }
+    if(!isConfigured(PAYMENT_CONFIG.paypalUsername, 'YOUR_PAYPAL_USERNAME')){
+      showToast('Add your real PayPal username inside PAYMENT_CONFIG in the code before going live.', 'error');
+      return;
+    }
+    window.open(buildPaypalLink(), '_blank');
+  });
+  /* ========================================================================= */
+
+  function updatePaymentStep(){
+    $('#payAmount').textContent = state.service ? ('₹' + state.fee.toLocaleString('en-IN')) : '₹0';
+    $('#payServiceLabel').textContent = state.service ? (state.service + ' Property — Advance Payment') : 'Select a service first';
+    if(state.step === 6) updateQrCode();
+  }
+
+  const nextBtn = $('#nextBtn');
+  const backBtn = $('#backBtn');
+  const submitBtn = $('#submitBtn');
+  const stepTitles = {1:'service selection', 2:'personal details', 3:'identity & address', 4:'property requirement', 5:'document uploads', 6:'payment'};
+  const stepShortLabels = {1:'Service', 2:'Personal', 3:'Identity', 4:'Property', 5:'Documents', 6:'Payment'};
+
+  function updateStickyProgress(){
+    const pct = Math.round((state.step-1) / (state.totalSteps-1) * 100);
+    $('#stickyStepNum').textContent = state.step;
+    $('#stickyStepLabel').textContent = stepShortLabels[state.step];
+    $('#stickyProgressFill').style.width = pct + '%';
+    $('#stickyProgressPct').textContent = pct + '%';
+    $('#stickyProgressTrack').setAttribute('aria-valuenow', pct);
+  }
+
+  function showStep(n){
+    $$('.form-step').forEach(s=> s.classList.toggle('active', parseInt(s.dataset.step,10)===n));
+    $$('.step-dot').forEach(d=>{
+      const ds = parseInt(d.dataset.step,10);
+      d.classList.toggle('active', ds===n);
+      d.classList.toggle('done', ds<n);
+    });
+    backBtn.disabled = n===1;
+    if(n===state.totalSteps){ nextBtn.classList.add('d-none'); submitBtn.classList.remove('d-none'); }
+    else {
+      nextBtn.classList.remove('d-none'); submitBtn.classList.add('d-none');
+      const nextLabels = {1:'Continue to personal details', 2:'Continue to identity & address', 3:'Continue to property details', 4:'Continue to documents', 5:'Continue to payment'};
+      nextBtn.innerHTML = (nextLabels[n] || 'Continue') + ' <i class="bi bi-arrow-right"></i>';
+    }
+    if(n === 6) updateQrCode();
+    window.scrollTo({top:0, behavior:'smooth'});
+    updateTicket();
+    updateStickyProgress();
+  }
+
+  function setFieldInvalid(el, invalid){
+    const group = el.closest('.field-group') || el.closest('.upload-tile');
+    if(!group) return;
+    group.classList.toggle('is-invalid', invalid);
+  }
+
+  function scrollToFirstInvalid(){
+    const first = $('.field-group.is-invalid, .upload-tile.is-invalid, .choice-grid.is-invalid');
+    if(first) first.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+
+  function validateStep(n){
+    let valid = true;
+    let firstIssue = null;
+    if(n===1){
+      if(!state.service){
+        $('#serviceTypeError').style.display='flex';
+        valid = false;
+      }
+    }
+    if(n===2){
+      const requiredIds = ['fullName','mobileNumber','email','dob','gender','occupation'];
+      requiredIds.forEach(id=>{
+        const el = $('#'+id);
+        const ok = el.checkValidity() && el.value.trim()!=='';
+        setFieldInvalid(el, !ok);
+        if(!ok){ valid = false; if(!firstIssue) firstIssue = id; }
+      });
+    }
+    if(n===3){
+      const requiredIds = ['religion','caste','aadhaar','pan','address','city','district','state','pincode'];
+      requiredIds.forEach(id=>{
+        const el = $('#'+id);
+        const ok = el.checkValidity() && el.value.trim()!=='';
+        setFieldInvalid(el, !ok);
+        if(!ok){ valid = false; if(!firstIssue) firstIssue = id; }
+      });
+    }
+    if(n===4){
+      const propTypeChecked = document.querySelector('input[name="propertyType"]:checked');
+      const ptOk = !!propTypeChecked;
+      $('#propertyTypeGrid').classList.toggle('is-invalid', !ptOk);
+      $('#propertyTypeError').style.display = ptOk ? 'none' : 'flex';
+      if(!ptOk){ valid = false; if(!firstIssue) firstIssue = 'propertyTypeGrid'; }
+
+      const generalIds = ['numRooms','numHalls','numKitchens','numRestrooms','totalSqft','electrical','waterFacility','furnished','parking','constructionStatus'];
+      generalIds.forEach(id=>{
+        const el = $('#'+id);
+        const ok = el.checkValidity() && el.value.trim()!=='';
+        setFieldInvalid(el, !ok);
+        if(!ok){ valid = false; if(!firstIssue) firstIssue = id; }
+      });
+
+      const dynamicIdsByService = {
+        Buy: ['loanRequired','loanApproved','bankName','preferredPropType'],
+        Lease: ['leaseBudget','leaseDuration','leasePropertyRequirement'],
+        TenantRental: ['tenantMonthlyRentBudget','tenantPreferredArea','tenantFamilyMembers','tenantPets','tenantMoveInDate']
+      };
+      (dynamicIdsByService[state.service] || []).forEach(id=>{
+        const el = $('#'+id);
+        if(!el) return;
+        const ok = el.checkValidity() && el.value.trim()!=='';
+        setFieldInvalid(el, !ok);
+        if(!ok){ valid = false; if(!firstIssue) firstIssue = id; }
+      });
+
+      const businessTypeWrap = $('#businessTypeWrap');
+      if(state.service === 'Lease' && businessTypeWrap && !businessTypeWrap.classList.contains('d-none')){
+        const el = $('#businessType');
+        const ok = el.checkValidity() && el.value.trim()!=='';
+        setFieldInvalid(el, !ok);
+        if(!ok){ valid = false; if(!firstIssue) firstIssue = 'businessType'; }
+      }
+
+      if(state.service === 'Property'){
+        const purposeChecked = document.querySelector('input[name="propPurpose"]:checked');
+        const purposeOk = !!purposeChecked;
+        $('#propPurposeGrid').classList.toggle('is-invalid', !purposeOk);
+        $('#propPurposeError').style.display = purposeOk ? 'none' : 'flex';
+        if(!purposeOk){ valid = false; if(!firstIssue) firstIssue = 'propPurposeGrid'; }
+
+        const propOwnIds = ['propOwnLocation','propOwnSize','propOwnAmount','propOwnAge','propOwnershipDetails'];
+        propOwnIds.forEach(id=>{
+          const el = $('#'+id);
+          const ok = el.checkValidity() && el.value.trim()!=='';
+          setFieldInvalid(el, !ok);
+          if(!ok){ valid = false; if(!firstIssue) firstIssue = id; }
+        });
+
+        const imgOk = propImages.length >= MIN_PROP_IMAGES;
+        const vidOk = !!propVideo;
+        propMediaNote.classList.toggle('err', !(imgOk && vidOk));
+        if(!imgOk || !vidOk) valid = false;
+      }
+    }
+    if(n===5 && state.service){
+      $$('#uploadGrid .upload-tile[data-required="true"]').forEach(tile=>{
+        const inp = tile.querySelector('input[type=file]');
+        const ok = inp.files && inp.files.length>0;
+        tile.classList.toggle('is-invalid', !ok);
+        if(!ok) valid = false;
+      });
+      uploadDefs[state.service].filter(d=>d.gallery && d.required).forEach(def=>{
+        const block = document.querySelector(`.gallery-block[data-gallery-id="${def.id}"]`);
+        const ok = (galleryFiles[def.id]||[]).length >= (def.min||1);
+        if(block){ block.dataset.touched = '1'; block.classList.toggle('is-invalid', !ok); }
+        if(!ok) valid = false;
+      });
+    }
+    if(n===6){
+      const payInp = $('#paymentScreenshot');
+      const payOk = payInp.files && payInp.files.length>0;
+      $('#paymentUploadTile').classList.toggle('is-invalid', !payOk);
+      $('#paymentUploadError').style.display = payOk ? 'none' : 'flex';
+      if(!payOk) valid = false;
+
+      const decl = $('#declaration');
+      $('#declarationError').style.display = decl.checked ? 'none' : 'flex';
+      if(!decl.checked) valid = false;
+    }
+    if(!valid){
+      showToast(`A few things need your attention in ${stepTitles[n]} before you can continue.`, 'error');
+      scrollToFirstInvalid();
+    }
+    return valid;
+  }
+
+  nextBtn.addEventListener('click', ()=>{
+    if(!validateStep(state.step)) return;
+    if(state.step < state.totalSteps){ state.step++; showStep(state.step); }
+  });
+  backBtn.addEventListener('click', ()=>{
+    if(state.step>1){ state.step--; showStep(state.step); }
+  });
+
+  document.addEventListener('input', (e)=>{
+    if(e.target.id==='fullName') updateTicket();
+    // clear the inline error the moment the field becomes valid again
+    const grp = e.target.closest('.field-group');
+    if(grp && grp.classList.contains('is-invalid') && e.target.checkValidity() && e.target.value.trim()!==''){
+      grp.classList.remove('is-invalid');
+    }
+  });
+  document.addEventListener('change', (e)=>{
+    const grp = e.target.closest('.field-group');
+    if(grp && grp.classList.contains('is-invalid') && e.target.checkValidity() && e.target.value.trim()!==''){
+      grp.classList.remove('is-invalid');
+    }
+  });
+  $('#declaration').addEventListener('change', function(){
+    if(this.checked) $('#declarationError').style.display='none';
+  });
+
+  function collectFormData(){
+    const fd = new FormData();
+    fd.append('serviceType', state.service || '');
+    fd.append('declaration', $('#declaration').checked ? 'true' : 'false');
+
+    const textFields = [
+      'fullName','mobileNumber','whatsappNumber','email','dob','gender','occupation',
+      'religion','caste','aadhaar','pan','address','city','district','state','pincode',
+      'numRooms','numHalls','numKitchens','numRestrooms','totalSqft','electrical','waterFacility','furnished',
+      'parking','constructionStatus','additionalRequirements',
+      'loanRequired','loanApproved','bankName','preferredPropType',
+      'sellLocation','sellSize','expectedPrice','propertyAge','ownershipDetails',
+      'monthlyRentBudget','rentalPreferredArea','familyMembers','pets','moveInDate',
+      'leaseBudget','leaseDuration','businessType','leasePropertyRequirement',
+      'tenantMonthlyRentBudget','tenantPreferredArea','tenantFamilyMembers','tenantPets','tenantMoveInDate',
+      'propOwnLocation','propOwnSize','propOwnAmount','propOwnAge','propOwnershipDetails'
+    ];
+    textFields.forEach(id=>{
+      const el = $('#'+id);
+      if(el) fd.append(id, el.value || '');
+    });
+    const propertyTypeChecked = document.querySelector('input[name="propertyType"]:checked');
+    fd.append('propertyType', propertyTypeChecked ? propertyTypeChecked.value : '');
+    const propPurposeChecked = document.querySelector('input[name="propPurpose"]:checked');
+    fd.append('propPurpose', propPurposeChecked ? propPurposeChecked.value : '');
+
+    if(state.service === 'Property'){
+      propImages.forEach((file, idx)=> fd.append('propertyImages[]', file, file.name || ('photo_'+idx)));
+      if(propVideo) fd.append('propertyVideo', propVideo, propVideo.name || 'video');
+    }
+
+    const defs = uploadDefs[state.service] || [];
+    defs.forEach(def=>{
+      if(def.gallery){
+        (galleryFiles[def.id]||[]).forEach((file, idx)=> fd.append('documents['+def.id+'][]', file, file.name || (def.id+'_'+idx)));
+        return;
+      }
+      const input = $('#'+def.id);
+      if(input && input.files && input.files[0]) fd.append('documents['+def.id+']', input.files[0]);
+    });
+    const payInput = $('#paymentScreenshot');
+    if(payInput && payInput.files && payInput.files[0]) fd.append('paymentScreenshot', payInput.files[0]);
+
+    return fd;
+  }
+
+  // Lightweight record (no files) used only for local login/matching on
+  // matches.html — kept separate from collectFormData(), which still
+  // builds the full multipart payload for the real CRM once it's live.
+  function saveRegistrationLocally(){
+    try {
+      const purposeByService = { Buy:'For Sale', Lease:'For Lease' };
+      const propPurposeChecked = document.querySelector('input[name="propPurpose"]:checked');
+      const propertyTypeChecked = document.querySelector('input[name="propertyType"]:checked');
+      const val = id => { const el = $('#'+id); return el ? el.value.trim() : ''; };
+      const record = {
+        id: regId,
+        mobileNumber: val('mobileNumber'),
+        fullName: val('fullName'),
+        serviceType: state.service || '',
+        propPurpose: purposeByService[state.service] || (propPurposeChecked ? propPurposeChecked.value : ''),
+        propertyType: propertyTypeChecked ? propertyTypeChecked.value : val('preferredPropType'),
+        city: val('city'),
+        district: val('district'),
+        rentalPreferredArea: val('rentalPreferredArea'),
+        numRooms: val('numRooms'),
+        numHalls: val('numHalls'),
+        numKitchens: val('numKitchens'),
+        numRestrooms: val('numRestrooms'),
+        totalSqft: val('totalSqft'),
+        electrical: val('electrical'),
+        waterFacility: val('waterFacility'),
+        monthlyRentBudget: val('monthlyRentBudget'),
+        leaseBudget: val('leaseBudget'),
+        tenantMonthlyRentBudget: val('tenantMonthlyRentBudget'),
+        tenantPreferredArea: val('tenantPreferredArea'),
+        // Reaching this point means Step 6 (advance payment proof upload +
+        // declaration) already validated, so this registration counts as paid.
+        paid: true,
+        createdAt: new Date().toISOString()
+      };
+      const existing = JSON.parse(localStorage.getItem(REG_STORAGE_KEY) || '[]');
+      existing.push(record);
+      while (existing.length > 100) existing.shift();
+      localStorage.setItem(REG_STORAGE_KEY, JSON.stringify(existing));
+    } catch(err){
+      console.warn('Could not save registration locally:', err);
+    }
+  }
+
+  submitBtn.addEventListener('click', ()=>{
+    if(!validateStep(6)) return;
+    $('#loadingOverlay').classList.add('show');
+
+    if(!PROPERTYCRM_API_CONFIGURED){
+      // Live CRM endpoint isn't connected yet — save locally instead of
+      // posting to http://localhost/... (which would just fail here).
+      setTimeout(()=>{
+        saveRegistrationLocally();
+        $('#loadingOverlay').classList.remove('show');
+        $('#successRefId').textContent = 'Reference: #' + regId;
+        $('#successOverlay').classList.add('show');
+        showToast('Registration submitted successfully.', 'success', 5000);
+      }, 500);
+      return;
+    }
+
+    fetch(PROPERTYCRM_API_URL, { method:'POST', body: collectFormData() })
+      .then(r=>r.json())
+      .then(res=>{
+        $('#loadingOverlay').classList.remove('show');
+        if(!res.success){
+          showToast(res.message || 'Could not submit registration. Please try again.', 'error', 6000);
+          return;
+        }
+        $('#successRefId').textContent = 'Reference: #' + (res.data && res.data.reference ? res.data.reference : regId);
+        $('#successOverlay').classList.add('show');
+        showToast('Registration submitted successfully.', 'success', 5000);
+      })
+      .catch(()=>{
+        $('#loadingOverlay').classList.remove('show');
+        showToast('Network error — please check your connection and try again.', 'error', 6000);
+      });
+  });
+
+  $('#closeSuccessBtn').addEventListener('click', ()=>{
+    if(prefersReducedMotion){
+      window.location.href = 'index.html';
+      return;
+    }
+    document.body.classList.add('page-exiting');
+    document.body.addEventListener('animationend', ()=>{
+      window.location.href = 'index.html';
+    }, { once:true });
+  });
+
+  showStep(1);
+  updateTicket();
+  updatePaymentStep();
+})();
+</script>
+</body>
+</html>

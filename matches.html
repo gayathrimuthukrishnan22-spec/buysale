@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Backup for .htaccess no-cache rules, in case mod_headers isn't enabled on the server -->
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<!-- Auto-update checker: gets the latest version number from version.json and
+     uses it to bust the CSS/JS cache automatically, so EVERY device always
+     loads the newest files with zero manual hard refresh. Whenever you upload
+     a new main.css or main.js, just bump the "v" number in version.json. -->
+<script>
+(function(){
+  var v = Date.now();
+  try {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'version.json?_=' + Date.now(), false);
+    xhr.send(null);
+    if (xhr.status === 200) {
+      var data = JSON.parse(xhr.responseText);
+      if (data && data.v) v = data.v;
+    }
+  } catch (e) {}
+  window.BSRP_V = v;
+})();
+</script>
+<title>My Matches | buysalerentalproperty</title>
+<meta name="robots" content="noindex, nofollow">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script>document.write('<link href="assets/css/main.css?v=' + window.BSRP_V + '" rel="stylesheet">');</script>
+
+<style>
+.matches-wrap{ max-width: 1100px; margin: 0 auto; padding: 110px 15px 60px; }
+
+.login-card{
+  max-width: 460px; margin: 0 auto;
+  background: var(--glass); backdrop-filter: blur(15px);
+  border: 1px solid var(--glass-border); border-radius: 18px;
+  padding: 32px 26px; text-align:center;
+}
+.login-card i.bi-shield-lock{ font-size: 2.4rem; color: var(--gold); }
+.login-card .form-label{ color:#e9e0ff; font-size:.85rem; margin-bottom:6px; text-align:left; display:block; }
+.login-card .form-control{
+  background: rgba(255,255,255,0.06) !important; border:1px solid var(--glass-border);
+  color:#fff !important;
+}
+.login-card .form-control::placeholder{ color: rgba(255,255,255,0.45); }
+.login-card .form-control:focus{
+  border-color: var(--gold); box-shadow: 0 0 0 3px rgba(255,215,0,0.15);
+  background: rgba(255,255,255,0.08) !important;
+}
+#loginMsg{ display:none; border-radius: 12px; padding: 10px 14px; margin-top: 14px; font-size:.85rem; text-align:left; }
+#loginMsg.err{ display:block; background: rgba(220,60,60,0.15); border:1px solid #dc3c3c; color:#ffd9d9; }
+#loginMsg.info{ display:block; background: rgba(255,215,0,0.1); border:1px solid var(--gold); color:#ffe9a8; }
+
+.summary-bar{
+  background: var(--glass); border:1px solid var(--glass-border); border-radius: 14px;
+  padding: 14px 20px; margin-bottom: 24px;
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px;
+}
+.summary-bar .sb-title{ color: var(--gold); font-weight:600; }
+.summary-bar .sb-crit{ font-size:.82rem; color: rgba(255,255,255,0.7); }
+.summary-bar .sb-crit span{ color:#fff; }
+
+.privacy-note{
+  font-size:.8rem; color: rgba(255,255,255,0.55); text-align:center; margin: 18px 0 26px;
+}
+.privacy-note i{ color: var(--gold); }
+
+/* Reuse the same property-card / pm-carousel look as the homepage,
+   just without address / owner phone in the body. */
+</style>
+</head>
+<body>
+
+<div class="bubbles" id="bubble-container"></div>
+
+<nav class="navbar navbar-expand-lg fixed-top">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+      <img src="assets/img/logo.png" alt="BUYSALERENTAL Logo" style="height:60px;">
+      <span class="shining-text fw-bold d-none d-sm-inline">BUYSALERENTAL</span>
+    </a>
+    <span class="text-warning ms-auto">My Matches</span>
+  </div>
+</nav>
+
+<div class="matches-wrap">
+
+  <!-- LOGIN STEP -->
+  <div id="loginStep">
+    <div class="login-card" data-aos="zoom-in">
+      <i class="bi bi-shield-lock"></i>
+      <h3 class="shining-text mt-2 mb-2">View My Matches</h3>
+      <p style="color:rgba(255,255,255,.7); font-size:.9rem;">
+        Enter the mobile number you registered with on the booking page.
+        We only unlock matches for registrations where the advance payment
+        was already completed.
+      </p>
+      <div class="text-start mt-3">
+        <label class="form-label">Registered Mobile Number</label>
+        <input type="tel" class="form-control" id="loginMobile" placeholder="10-digit mobile number" pattern="[6-9][0-9]{9}" maxlength="10" inputmode="numeric">
+      </div>
+      <button type="button" class="btn pulse-btn w-100 mt-3" id="loginBtn">
+        <i class="bi bi-unlock"></i> View My Matches
+      </button>
+      <div id="loginMsg"></div>
+      <p class="mt-3 mb-0" style="font-size:.82rem; color:rgba(255,255,255,.55);">
+        Haven't registered yet? <a href="./book.html" class="text-warning">Register &amp; pay the advance</a> first.
+      </p>
+    </div>
+  </div>
+
+  <!-- MATCHES STEP (hidden until login succeeds) -->
+  <div id="matchesStep" class="d-none">
+    <div class="summary-bar">
+      <div>
+        <div class="sb-title"><i class="bi bi-person-check"></i> Welcome<span id="sbName"></span> <span id="sbLeadCode" class="text-white-50" style="font-size:.78rem; font-weight:400;"></span></div>
+        <div class="sb-crit" id="sbCriteria"></div>
+      </div>
+      <div class="d-flex align-items-center gap-3">
+        <span id="sbMatchCount" class="text-warning fw-semibold" style="font-size:.9rem;"></span>
+        <button type="button" class="btn btn-sm btn-outline-light" id="logoutBtn"><i class="bi bi-box-arrow-right"></i> Use a different number</button>
+      </div>
+    </div>
+
+    <div class="row g-4" id="matchResults"></div>
+    <p class="text-center text-white-50 mt-4 d-none" id="noMatchMsg"></p>
+
+    <p class="privacy-note">
+      <i class="bi bi-eye-slash"></i> For your safety, exact addresses and owner mobile numbers aren't shown here —
+      our team will share those details once your enquiry is confirmed.
+    </p>
+  </div>
+
+</div>
+
+<script>
+// ---- PropertyCRM API (same install book.html submits registrations to) ----
+// This is what makes matches only appear AFTER an admin/employee has
+// verified the advance-payment screenshot on the Payment Verification page
+// (see PropertyCRM/api/leads/verify-payment.php). Until that "accept" step
+// happens, my-matches.php reports status: 'pending_verification' and no
+// matches are shown, however 'paid' local data might claim.
+const IS_LOCAL_DEV = ['localhost', '127.0.0.1'].includes(location.hostname);
+const PROPERTYCRM_MYMATCHES_URL = IS_LOCAL_DEV
+  ? 'http://localhost/PropertyCRM/api/public/my-matches.php'   // ← edit if your local PropertyCRM folder name/port differs
+  : 'https://mediumslateblue-butterfly-616701.hostingersite.com/api/public/my-matches.php';
+
+// ---- Storage keys (must match assets/js/main.js and book.html/add-property.html) ----
+// Kept only as an OFFLINE fallback (e.g. CRM unreachable) — the CRM check
+// above is the source of truth for whether a registration was accepted.
+const REG_STORAGE_KEY = 'bsrp_registrations';
+const PROPERTY_STORAGE_KEY = 'bsrp_local_properties';
+
+// Bubbles background (same as other pages)
+(function bubbles(){
+  const container = document.getElementById('bubble-container');
+  if (!container) return;
+  for (let i = 0; i < 20; i++) {
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+    const size = Math.random() * 60 + 20 + 'px';
+    bubble.style.width = size;
+    bubble.style.height = size;
+    bubble.style.left = Math.random() * 100 + '%';
+    bubble.style.animationDuration = Math.random() * 10 + 10 + 's';
+    bubble.style.animationDelay = Math.random() * 5 + 's';
+    container.appendChild(bubble);
+  }
+})();
+
+function getRegistrations(){
+  try { return JSON.parse(localStorage.getItem(REG_STORAGE_KEY) || '[]'); }
+  catch(err){ console.warn('Could not read registrations:', err); return []; }
+}
+function getProperties(){
+  try { return JSON.parse(localStorage.getItem(PROPERTY_STORAGE_KEY) || '[]'); }
+  catch(err){ console.warn('Could not read properties:', err); return []; }
+}
+
+function findLatestPaidRegistration(mobile){
+  const all = getRegistrations().filter(r => r.mobileNumber === mobile && r.paid);
+  if (!all.length) return null;
+  all.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  return all[0];
+}
+
+// Every service type now gets matches — we just pick the budget/location
+// fields that make sense for that service, falling back to the shared
+// General Details fields (minBudget/maxBudget/preferredArea/preferredCity/city)
+// collected on Step 4 for any service that doesn't have its own dedicated field.
+function criteriaFromRegistration(reg){
+  const c = { type: reg.propertyType || '', purpose: reg.propPurpose || '', budget: null, location: '' };
+  if (reg.serviceType === 'Rental') {
+    c.budget = Number(reg.monthlyRentBudget) || Number(reg.maxBudget) || null;
+    c.location = reg.rentalPreferredArea || reg.preferredArea || reg.preferredCity || reg.city || '';
+  } else if (reg.serviceType === 'Lease') {
+    c.budget = Number(reg.leaseBudget) || Number(reg.maxBudget) || null;
+    c.location = reg.preferredArea || reg.preferredCity || reg.city || '';
+  } else if (reg.serviceType === 'TenantRental') {
+    c.budget = Number(reg.tenantMonthlyRentBudget) || Number(reg.maxBudget) || null;
+    c.location = reg.tenantPreferredArea || reg.preferredArea || reg.preferredCity || reg.city || '';
+  } else {
+    // Buy, Sell, Property, and any future service type.
+    c.budget = Number(reg.maxBudget) || null;
+    c.location = reg.preferredArea || reg.preferredCity || reg.city || '';
+  }
+  return c;
+}
+
+function parsePriceValue(priceStr){
+  if (!priceStr) return null;
+  const digits = String(priceStr).replace(/[^\d]/g, '');
+  return digits ? Number(digits) : null;
+}
+
+function scoreMatch(property, criteria){
+  if (criteria.type && property.type !== criteria.type) return -1;   // hard filter
+  if (criteria.purpose && property.purpose !== criteria.purpose) return -1; // hard filter
+  let score = 1;
+  if (criteria.location) {
+    const haystack = [property.district, property.city, property.address, property.location]
+      .filter(Boolean).join(' ').toLowerCase();
+    if (haystack.includes(criteria.location.toLowerCase())) score += 2;
+  }
+  if (criteria.budget) {
+    const priceVal = parsePriceValue(property.price);
+    if (priceVal && priceVal <= criteria.budget * 1.15) score += 1;
+  }
+  return score;
+}
+
+function findMatches(criteria){
+  return getProperties()
+    .map(p => ({ property: p, score: scoreMatch(p, criteria) }))
+    .filter(m => m.score >= 0)
+    .sort((a, b) => b.score - a.score)
+    .map(m => m.property);
+}
+
+// ---- Privacy-safe card + carousel (address & owner phone deliberately omitted) ----
+let cardUid = 0;
+const autoplayTimers = new Map();
+const AUTOPLAY_MS = 3500;
+
+function slidesMarkup(property){
+  const photos = (property.photos && property.photos.length) ? property.photos : [];
+  const slides = photos.map((src, i) =>
+    `<div class="pm-slide"><img src="${src}" alt="${property.title || 'Property'} photo ${i + 1}" loading="lazy"></div>`
+  );
+  if (property.video) {
+    const poster = photos[0] || '';
+    slides.push(`<div class="pm-slide pm-slide-video"><video class="w-100 h-100" src="${property.video}"
+                  poster="${poster}" controls muted playsinline preload="metadata"></video></div>`);
+  }
+  if (slides.length === 0) slides.push(`<div class="pm-slide"><img src="" alt="${property.title || 'Property'}"></div>`);
+  return slides.join('');
+}
+
+function mediaMarkup(property, uid){
+  const total = (property.photos ? property.photos.length : 0) + (property.video ? 1 : 0);
+  const showControls = total > 1;
+  const dots = showControls
+    ? Array.from({ length: total }).map((_, i) => `<span class="pm-dot${i === 0 ? ' active' : ''}" data-i="${i}"></span>`).join('')
+    : '';
+  return `
+    <div class="pm-carousel" id="${uid}" data-idx="0" data-count="${total}">
+      <div class="pm-track">${slidesMarkup(property)}</div>
+      ${showControls ? `
+      <button type="button" class="pm-arrow pm-prev" aria-label="Previous photo"><i class="bi bi-chevron-left"></i></button>
+      <button type="button" class="pm-arrow pm-next" aria-label="Next photo"><i class="bi bi-chevron-right"></i></button>
+      <div class="pm-dots">${dots}</div>` : ''}
+    </div>`;
+}
+
+function escapeHtml(s){
+  return String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+}
+
+function cardMarkup(property){
+  const uid = 'mmCarousel' + (cardUid++);
+  // Deliberately no street address or owner mobile here — everything else
+  // (exact area/city, district, BHK/size/description) is shown in full.
+  const area = property.area || property.city || '';
+  const district = property.district || '';
+  const areaLine = [area, district ? `${district} District` : ''].filter(Boolean).join(', ');
+
+  // Extra info shown only after tapping "For More" — kept hidden by default
+  // so the card stays compact, but nothing is thrown away.
+  const moreRows = [
+    property.bhk ? ['BHK', property.bhk] : null,
+    (property.size) ? ['Size', property.size + (property.sizeUnit ? ' ' + property.sizeUnit : '')] : null,
+    property.furnished ? ['Furnished', property.furnished] : null,
+    property.parking ? ['Parking', property.parking] : null,
+    property.status ? ['Status', property.status] : null,
+  ].filter(Boolean);
+  // The live PropertyCRM API (my-matches.php) sends extra info in
+  // property.details (free text: BHK/size/etc typed by staff), while the
+  // offline/local fallback data uses property.description — support both
+  // so "Read More" actually shows something instead of staying hidden.
+  const descText = (property.description || property.details || '').trim();
+  const moreHtml = moreRows.map(([k, v]) => `<div><strong>${escapeHtml(k)}:</strong> ${escapeHtml(v)}</div>`).join('');
+  const hasMore = moreRows.length > 0 || descText;
+
+  return `
+  <div class="col-12 col-sm-6 col-md-4">
+    <div class="property-card">
+      <div class="property-media">
+        <span class="purpose-badge">${property.purpose || ''}</span>
+        <span class="media-type-badge">${property.type || ''}</span>
+        ${mediaMarkup(property, uid)}
+      </div>
+      <div class="property-body">
+        <h5>${property.title || 'Property'}</h5>
+        ${areaLine ? `<div class="property-district"><i class="bi bi-geo-alt"></i> ${areaLine}</div>` : ''}
+        <div class="property-price">${property.price || ''}</div>
+        ${hasMore ? `
+        <button type="button" class="btn-for-more" aria-expanded="false">
+          <i class="bi bi-chevron-down"></i> Read More
+        </button>
+        <div class="property-more-details d-none">
+          ${moreHtml}
+          ${descText ? `<div class="mt-1">${escapeHtml(descText).replace(/\n/g, '<br>')}</div>` : ''}
+        </div>` : ''}
+        <div class="property-contact-msg"><i class="bi bi-telephone"></i> For more details, contact buysalerentalproperty.com</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function goToSlide(carouselEl, index){
+  const track = carouselEl.querySelector('.pm-track');
+  const count = track.children.length;
+  if (!count) return;
+  const i = ((index % count) + count) % count;
+  track.style.transform = `translateX(-${i * 100}%)`;
+  carouselEl.dataset.idx = i;
+  carouselEl.querySelectorAll('.pm-dot').forEach((d, di) => d.classList.toggle('active', di === i));
+}
+function stopAutoplay(carouselEl){
+  const timer = autoplayTimers.get(carouselEl);
+  if (timer) clearInterval(timer);
+  autoplayTimers.delete(carouselEl);
+}
+function startAutoplay(carouselEl){
+  stopAutoplay(carouselEl);
+  if (Number(carouselEl.dataset.count || 0) < 2) return;
+  const timer = setInterval(() => {
+    const playingVideo = carouselEl.querySelector('video');
+    if (playingVideo && !playingVideo.paused) return;
+    goToSlide(carouselEl, Number(carouselEl.dataset.idx || 0) + 1);
+  }, AUTOPLAY_MS);
+  autoplayTimers.set(carouselEl, timer);
+}
+
+const matchResults = document.getElementById('matchResults');
+const noMatchMsg = document.getElementById('noMatchMsg');
+
+matchResults.addEventListener('click', (e) => {
+  const arrow = e.target.closest('.pm-arrow');
+  if (arrow) {
+    e.stopPropagation();
+    const carouselEl = arrow.closest('.pm-carousel');
+    goToSlide(carouselEl, Number(carouselEl.dataset.idx || 0) + (arrow.classList.contains('pm-next') ? 1 : -1));
+    return;
+  }
+  const dot = e.target.closest('.pm-dot');
+  if (dot) {
+    e.stopPropagation();
+    goToSlide(dot.closest('.pm-carousel'), Number(dot.dataset.i));
+    return;
+  }
+  const moreBtn = e.target.closest('.btn-for-more');
+  if (moreBtn) {
+    e.stopPropagation();
+    const panel = moreBtn.nextElementSibling;
+    const isOpen = !panel.classList.contains('d-none');
+    panel.classList.toggle('d-none', isOpen);
+    moreBtn.setAttribute('aria-expanded', String(!isOpen));
+    moreBtn.innerHTML = isOpen
+      ? '<i class="bi bi-chevron-down"></i> Read More'
+      : '<i class="bi bi-chevron-up"></i> Show Less';
+  }
+});
+matchResults.addEventListener('mouseenter', (e) => {
+  const c = e.target.closest && e.target.closest('.pm-carousel');
+  if (c) stopAutoplay(c);
+}, true);
+matchResults.addEventListener('mouseleave', (e) => {
+  const c = e.target.closest && e.target.closest('.pm-carousel');
+  if (c) startAutoplay(c);
+}, true);
+
+function renderMatches(list){
+  autoplayTimers.forEach(t => clearInterval(t));
+  autoplayTimers.clear();
+  matchResults.innerHTML = list.map(cardMarkup).join('');
+  noMatchMsg.classList.toggle('d-none', list.length > 0);
+  if (list.length === 0) {
+    noMatchMsg.innerHTML = `No matching properties in stock right now. <a href="./book.html" class="text-warning">Contact us</a> and we'll notify you as soon as one comes in.`;
+  }
+  matchResults.querySelectorAll('.pm-carousel').forEach(c => { c.dataset.idx = '0'; startAutoplay(c); });
+}
+
+// ---- Login flow ----
+const loginStep = document.getElementById('loginStep');
+const matchesStep = document.getElementById('matchesStep');
+const loginBtn = document.getElementById('loginBtn');
+const loginMobile = document.getElementById('loginMobile');
+const loginMsg = document.getElementById('loginMsg');
+const sbName = document.getElementById('sbName');
+const sbCriteria = document.getElementById('sbCriteria');
+const sbLeadCode = document.getElementById('sbLeadCode');
+const sbMatchCount = document.getElementById('sbMatchCount');
+
+function showLoginMessage(text, kind){
+  loginMsg.textContent = text;
+  loginMsg.className = kind;
+  loginMsg.style.display = 'block';
+}
+
+function showResults(clientName, criteria, matches, leadCode, matchCount){
+  sbName.textContent = clientName ? `, ${clientName}` : '';
+  sbLeadCode.textContent = leadCode ? `(Ref: ${leadCode})` : '';
+  const bits = [];
+  if (criteria.type) bits.push(`Type: <span>${criteria.type}</span>`);
+  if (criteria.purpose) bits.push(`Looking to: <span>${criteria.purpose}</span>`);
+  if (criteria.location) bits.push(`Area: <span>${criteria.location}</span>`);
+  if (criteria.budget) bits.push(`Budget: <span>₹${Number(criteria.budget).toLocaleString('en-IN')}</span>`);
+  sbCriteria.innerHTML = bits.join(' &nbsp;·&nbsp; ');
+
+  const count = matchCount ?? matches.length;
+  sbMatchCount.innerHTML = `<i class="bi bi-houses"></i> ${count} match${count === 1 ? '' : 'es'} found`;
+
+  renderMatches(matches);
+  loginStep.classList.add('d-none');
+  matchesStep.classList.remove('d-none');
+}
+
+// Offline/unreachable-CRM fallback only — CRM (my-matches.php) is the real
+// source of truth for whether staff accepted the payment.
+function attemptLoginOffline(mobile){
+  const reg = findLatestPaidRegistration(mobile);
+  if (!reg) {
+    showLoginMessage("We couldn't find a paid registration for this number. Please register and complete the advance payment on the booking page first.", 'err');
+    return;
+  }
+  const criteria = criteriaFromRegistration(reg);
+  const matches = findMatches(criteria);
+  showResults(reg.fullName, criteria, matches, null, matches.length);
+}
+
+async function attemptLogin(){
+  const mobile = loginMobile.value.trim();
+  loginMsg.className = ''; loginMsg.style.display = 'none';
+
+  if (!/^[6-9][0-9]{9}$/.test(mobile)) {
+    showLoginMessage('Enter the 10-digit mobile number you registered with.', 'err');
+    return;
+  }
+
+  loginBtn.disabled = true;
+  const originalBtnHtml = loginBtn.innerHTML;
+  loginBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Checking...';
+
+  try {
+    const res = await fetch(`${PROPERTYCRM_MYMATCHES_URL}?mobile=${encodeURIComponent(mobile)}`);
+    const data = await res.json();
+
+    if (!res.ok || !data.success) {
+      // 404 = no registration found at all under this number.
+      showLoginMessage(data.message || "We couldn't find a registration for this number. Please register and complete the advance payment on the booking page first.", 'err');
+      return;
+    }
+
+    const { status, client_name, criteria, matches, lead_code, match_count } = data.data;
+
+    if (status === 'pending_verification') {
+      // This is the "wait for admin to accept" state.
+      showLoginMessage(data.message, 'info');
+      return;
+    }
+    if (status === 'cancelled' || status === 'dead') {
+      showLoginMessage(data.message, 'err');
+      return;
+    }
+
+    // status === 'verified' -> staff already accepted the payment.
+    showResults(client_name, criteria || {}, matches || [], lead_code, match_count);
+  } catch (err) {
+    console.warn('my-matches.php unreachable, falling back to offline check:', err);
+    attemptLoginOffline(mobile);
+  } finally {
+    loginBtn.disabled = false;
+    loginBtn.innerHTML = originalBtnHtml;
+  }
+}
+
+loginBtn.addEventListener('click', attemptLogin);
+loginMobile.addEventListener('keydown', (e) => { if (e.key === 'Enter') attemptLogin(); });
+
+document.getElementById('logoutBtn').addEventListener('click', () => {
+  autoplayTimers.forEach(t => clearInterval(t));
+  autoplayTimers.clear();
+  loginMobile.value = '';
+  loginMsg.className = ''; loginMsg.style.display = 'none';
+  matchesStep.classList.add('d-none');
+  loginStep.classList.remove('d-none');
+});
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

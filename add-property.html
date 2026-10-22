@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Backup for .htaccess no-cache rules, in case mod_headers isn't enabled on the server -->
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<!-- Auto-update checker: gets the latest version number from version.json and
+     uses it to bust the CSS/JS cache automatically, so EVERY device always
+     loads the newest files with zero manual hard refresh. Whenever you upload
+     a new main.css or main.js, just bump the "v" number in version.json. -->
+<script>
+(function(){
+  var v = Date.now();
+  try {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'version.json?_=' + Date.now(), false);
+    xhr.send(null);
+    if (xhr.status === 200) {
+      var data = JSON.parse(xhr.responseText);
+      if (data && data.v) v = data.v;
+    }
+  } catch (e) {}
+  window.BSRP_V = v;
+})();
+</script>
+<title>Add Property Stock | buysalerentalproperty</title>
+<meta name="robots" content="noindex, nofollow">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script>document.write('<link href="assets/css/main.css?v=' + window.BSRP_V + '" rel="stylesheet">');</script>
+
+<style>
+/* ---- Extra styles just for this admin/staff "Add Property" page ---- */
+.stock-wrap{ max-width: 900px; margin: 0 auto; padding: 110px 15px 60px; }
+.section-title{ color: var(--gold); margin: 26px 0 14px; font-weight:600; }
+.section-title:first-of-type{ margin-top:0; }
+
+.choice-row{ display:flex; flex-wrap:wrap; gap:12px; margin-bottom: 10px; }
+.choice-card{
+  position: relative;
+  flex: 1 1 140px; cursor:pointer; text-align:center; padding: 16px 10px;
+  border-radius: 14px; border: 1.5px solid var(--glass-border);
+  background: var(--glass); transition: .25s;
+}
+.choice-card input{ position:absolute; opacity:0; pointer-events:none; }
+.choice-card i{ font-size: 1.4rem; display:block; margin-bottom:6px; color:#fff; }
+.choice-card span{ font-size: .9rem; }
+.choice-card:hover{ border-color: var(--gold); }
+.choice-card.selected{ border-color: var(--gold); background: rgba(255,215,0,0.12); }
+.choice-card.selected i, .choice-card.selected span{ color: var(--gold); }
+
+.form-label{ color:#e9e0ff; font-size:.85rem; margin-bottom:6px; }
+.form-control, .form-select{
+  background: rgba(255,255,255,0.06) !important; border:1px solid var(--glass-border);
+  color:#fff !important;
+}
+.form-control::placeholder{ color: rgba(255,255,255,0.45); }
+.form-control:focus, .form-select:focus{
+  border-color: var(--gold); box-shadow: 0 0 0 3px rgba(255,215,0,0.15);
+  background: rgba(255,255,255,0.08) !important;
+}
+.form-select option{ color:#000; }
+
+.type-hidden{ display:none; }
+
+#formMsg{ display:none; border-radius: 12px; padding: 12px 16px; margin-top: 18px; font-size:.92rem; }
+#formMsg.ok{ display:block; background: rgba(60,200,120,0.15); border:1px solid #3cc878; color:#c9ffe0; }
+#formMsg.err{ display:block; background: rgba(220,60,60,0.15); border:1px solid #dc3c3c; color:#ffd9d9; }
+
+.staff-note{
+  font-size:.8rem; color: rgba(255,255,255,0.55); text-align:center; margin-top: 18px;
+}
+</style>
+</head>
+<body>
+
+<div class="bubbles" id="bubble-container"></div>
+
+<nav class="navbar navbar-expand-lg fixed-top">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+      <img src="assets/img/logo.png" alt="BUYSALERENTAL Logo" style="height:60px;">
+      <span class="shining-text fw-bold d-none d-sm-inline">BUYSALERENTAL</span>
+    </a>
+    <span class="text-warning ms-auto">Staff · Add Property Stock</span>
+  </div>
+</nav>
+
+<div class="stock-wrap">
+  <h2 class="shining-text text-center mb-2">Add Property to Stock</h2>
+  <p class="text-center mb-4" style="color:rgba(255,255,255,.7)">
+    Use this form to add a new property listing into Property CRM (rental house, land for sale,
+    agriculture land, house for sale, commercial lease, etc).
+  </p>
+
+  <form id="propertyForm" class="glass-card" novalidate>
+
+    <!-- STEP 1: Category -->
+    <div class="section-title">1. Property Category</div>
+    <div class="choice-row" id="categoryRow">
+      <label class="choice-card" data-value="Residential">
+        <input type="radio" name="category" value="Residential" required>
+        <i class="bi bi-house-heart"></i><span>Residential</span>
+      </label>
+      <label class="choice-card" data-value="Commercial">
+        <input type="radio" name="category" value="Commercial" required>
+        <i class="bi bi-building"></i><span>Commercial</span>
+      </label>
+      <label class="choice-card" data-value="Agricultural">
+        <input type="radio" name="category" value="Agricultural" required>
+        <i class="bi bi-flower1"></i><span>Agricultural</span>
+      </label>
+      <label class="choice-card" data-value="Plot / Land">
+        <input type="radio" name="category" value="Plot / Land" required>
+        <i class="bi bi-map"></i><span>Plot / Land</span>
+      </label>
+    </div>
+
+    <!-- STEP 2: Purpose -->
+    <div class="section-title">2. Listing Purpose</div>
+    <div class="choice-row" id="purposeRow">
+      <label class="choice-card" data-value="Sale">
+        <input type="radio" name="purpose" value="Sale" required>
+        <i class="bi bi-tag"></i><span>For Sale</span>
+      </label>
+      <label class="choice-card" data-value="Rental">
+        <input type="radio" name="purpose" value="Rental" required>
+        <i class="bi bi-key"></i><span>For Rental</span>
+      </label>
+      <label class="choice-card" data-value="Lease">
+        <input type="radio" name="purpose" value="Lease" required>
+        <i class="bi bi-file-earmark-text"></i><span>For Lease</span>
+      </label>
+    </div>
+
+    <!-- STEP 3: Property Type -->
+    <div class="section-title">3. Property Type</div>
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Property Type</label>
+        <select class="form-select" id="propertyType" name="propertyType" required>
+          <option value="" disabled selected>Select category first</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Property Title / Name</label>
+        <input type="text" class="form-control" name="title" placeholder="e.g. 2BHK Independent House, Anna Nagar" required>
+      </div>
+    </div>
+
+    <!-- STEP 4: Details -->
+    <div class="section-title">4. Property Details</div>
+    <div class="row g-3">
+      <div class="col-12">
+        <label class="form-label">Description</label>
+        <textarea class="form-control" name="description" rows="3" placeholder="Key details about the property"></textarea>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label" id="priceLabel">Price (₹)</label>
+        <input type="number" class="form-control" name="price" placeholder="e.g. 4500000" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Price Type</label>
+        <select class="form-select" name="priceType">
+          <option value="One-time">One-time (Sale)</option>
+          <option value="Monthly">Monthly (Rent)</option>
+          <option value="Yearly">Yearly (Lease)</option>
+        </select>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">Size</label>
+        <input type="text" class="form-control" name="size" placeholder="e.g. 1200">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Size Unit</label>
+        <select class="form-select" name="sizeUnit">
+          <option>Sqft</option>
+          <option>Cents</option>
+          <option>Acres</option>
+          <option>Guntha</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Status</label>
+        <select class="form-select" name="status">
+          <option>Available</option>
+          <option>Sold</option>
+          <option>Rented</option>
+          <option>On Hold</option>
+        </select>
+      </div>
+
+      <!-- Residential-only fields -->
+      <div class="col-md-4 res-only type-hidden">
+        <label class="form-label">Bedrooms (BHK)</label>
+        <select class="form-select" name="bhk">
+          <option value="">N/A</option>
+          <option>1 BHK</option><option>2 BHK</option><option>3 BHK</option><option>4+ BHK</option>
+        </select>
+      </div>
+      <div class="col-md-4 res-only type-hidden">
+        <label class="form-label">Furnished Status</label>
+        <select class="form-select" name="furnished">
+          <option value="">N/A</option>
+          <option>Furnished</option><option>Semi-Furnished</option><option>Unfurnished</option>
+        </select>
+      </div>
+      <div class="col-md-4 res-only type-hidden">
+        <label class="form-label">Parking</label>
+        <select class="form-select" name="parking">
+          <option value="">N/A</option>
+          <option>Available</option><option>Not Available</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- STEP 5: Location -->
+    <div class="section-title">5. Location</div>
+    <div class="row g-3">
+      <div class="col-12">
+        <label class="form-label">Address</label>
+        <input type="text" class="form-control" name="address" placeholder="Street / Area" required>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">City</label>
+        <input type="text" class="form-control" name="city" placeholder="e.g. Madurai" required>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">District</label>
+        <input type="text" class="form-control" name="district" placeholder="e.g. Madurai">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Pincode</label>
+        <input type="text" class="form-control" name="pincode" pattern="[0-9]{6}" maxlength="6" placeholder="625011">
+      </div>
+    </div>
+
+    <!-- STEP 6: Owner / Contact -->
+    <div class="section-title">6. Owner / Contact Details</div>
+    <div class="row g-3">
+      <div class="col-md-4">
+        <label class="form-label">Owner Name</label>
+        <input type="text" class="form-control" name="ownerName" required>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Owner Phone</label>
+        <input type="tel" class="form-control" name="ownerPhone" pattern="[6-9][0-9]{9}" maxlength="10" required>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Added By (Staff Name)</label>
+        <input type="text" class="form-control" name="addedBy">
+      </div>
+    </div>
+
+    <!-- STEP 7: Photos -->
+    <div class="section-title">7. Property Photos</div>
+    <input type="file" class="form-control" name="images[]" accept=".jpg,.jpeg,.png,.webp" multiple>
+
+    <div id="formMsg"></div>
+
+    <button type="submit" class="btn pulse-btn w-100 mt-4" id="submitBtn">
+      <i class="bi bi-cloud-upload"></i> Save to Property CRM
+    </button>
+    <p class="staff-note">This adds the listing as stock/inventory in Property CRM — it is separate from the customer "Book Now" enquiry form.</p>
+  </form>
+</div>
+
+<script>
+/* =====================================================================
+   ★★★ EDIT THIS ONE LINE — point it at your Property CRM's real
+   "add property" endpoint once it's ready (same pattern as book.html's
+   PROPERTYCRM_API_URL, which posts customer enquiries to register.php).
+   Until you set this, the form will show a message instead of saving. ★★★
+===================================================================== */
+const IS_LOCAL_DEV = ['localhost', '127.0.0.1'].includes(location.hostname);
+const PROPERTYCRM_PROPERTY_API_URL = IS_LOCAL_DEV
+  ? 'http://localhost/PropertyCRM/api/public/property-add.php'
+  : 'https://mediumslateblue-butterfly-616701.hostingersite.com/api/public/property-add.php';
+const PROPERTYCRM_API_CONFIGURED = true; // set to true once the URL above is live
+
+// Until PROPERTYCRM_API_CONFIGURED is true, this form saves straight into
+// this browser's local storage instead — that's what actually keeps the
+// photos you upload below and shows them under "Search Property" on the
+// homepage (assets/js/main.js reads the same key). Once your real CRM
+// endpoint is live, flip the flag above and this local save stops being used.
+const LOCAL_STORAGE_KEY = 'bsrp_local_properties'; // must match assets/js/main.js
+const MAX_PHOTOS = 8;
+const PHOTO_MAX_WIDTH = 1100;
+const PHOTO_QUALITY = 0.75;
+
+function readFileAsCompressedDataURL(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const scale = Math.min(1, PHOTO_MAX_WIDTH / img.width);
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.round(img.width * scale);
+        canvas.height = Math.round(img.height * scale);
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL('image/jpeg', PHOTO_QUALITY));
+      };
+      img.onerror = () => reject(new Error('Could not read image ' + file.name));
+      img.src = reader.result;
+    };
+    reader.onerror = () => reject(new Error('Could not read file ' + file.name));
+    reader.readAsDataURL(file);
+  });
+}
+
+function formatPrice(price, type) {
+  if (!price) return '';
+  const num = Number(price);
+  const formatted = isNaN(num) ? price : '₹' + num.toLocaleString('en-IN');
+  if (type === 'Monthly') return formatted + ' / month';
+  if (type === 'Yearly') return formatted + ' / year';
+  return formatted;
+}
+
+async function buildPropertyFromForm(fd, files) {
+  const photos = [];
+  for (const file of files) {
+    try { photos.push(await readFileAsCompressedDataURL(file)); }
+    catch (err) { console.warn(err.message); }
+  }
+  const purposeLabelMap = { Sale: 'For Sale', Rental: 'For Rent', Lease: 'For Lease' };
+  const purposeVal = fd.get('purpose');
+  return {
+    id: 'local_' + Date.now(),
+    type: fd.get('category'),               // Residential / Commercial / Agricultural / Plot / Land
+    propertyType: fd.get('propertyType'),
+    purpose: purposeLabelMap[purposeVal] || purposeVal,
+    title: fd.get('title'),
+    description: fd.get('description'),
+    price: formatPrice(fd.get('price'), fd.get('priceType')),
+    size: fd.get('size'),
+    sizeUnit: fd.get('sizeUnit'),
+    status: fd.get('status'),
+    bhk: fd.get('bhk'),
+    furnished: fd.get('furnished'),
+    parking: fd.get('parking'),
+    address: fd.get('address'),
+    city: fd.get('city'),
+    district: fd.get('district'),
+    pincode: fd.get('pincode'),
+    location: [fd.get('address'), fd.get('city')].filter(Boolean).join(', '),
+    ownerName: fd.get('ownerName'),
+    ownerPhone: fd.get('ownerPhone'),
+    addedBy: fd.get('addedBy'),
+    photos: photos,
+    video: null,
+    createdAt: new Date().toISOString()
+  };
+}
+
+function saveLocally(property) {
+  const existing = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
+  existing.push(property);
+  while (existing.length > 60) existing.shift(); // keep local demo storage from growing forever
+  try {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(existing));
+  } catch (err) {
+    // Likely storage quota exceeded (too many/too large photos) — drop the
+    // oldest saved listing and retry once rather than losing this save.
+    existing.shift();
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(existing));
+  }
+}
+
+// Property type options per category — combine with the Purpose choice above
+// (Sale / Rental / Lease) to cover every combination: House for Rent, House
+// for Sale, House for Lease, Land for Rent, Land for Sale, Land for Lease, etc.
+const TYPE_OPTIONS = {
+  Residential: ['Independent House', 'Villa', 'Apartment / Flat', 'Row House', 'Farm House'],
+  Commercial: ['Commercial Shop', 'Commercial Office / Office Space', 'Showroom', 'Warehouse / Godown', 'Industrial Shed'],
+  Agricultural: ['Agriculture Land', 'Farm Land', 'Coconut / Mango Grove Land', 'Poultry / Dairy Farm Land'],
+  'Plot / Land': ['Residential Plot', 'Commercial Plot', 'DTCP Approved Plot', 'CMDA Approved Plot']
+};
+
+const categoryRow = document.getElementById('categoryRow');
+const purposeRow = document.getElementById('purposeRow');
+const propertyTypeSelect = document.getElementById('propertyType');
+const resOnlyFields = document.querySelectorAll('.res-only');
+
+function selectCard(row, input){
+  row.querySelectorAll('.choice-card').forEach(c => c.classList.remove('selected'));
+  input.closest('.choice-card').classList.add('selected');
+}
+
+categoryRow.addEventListener('click', (e) => {
+  const input = e.target.closest('.choice-card')?.querySelector('input');
+  if(!input) return;
+  input.checked = true;
+  selectCard(categoryRow, input);
+  updatePropertyTypes(input.value);
+});
+
+purposeRow.addEventListener('click', (e) => {
+  const input = e.target.closest('.choice-card')?.querySelector('input');
+  if(!input) return;
+  input.checked = true;
+  selectCard(purposeRow, input);
+});
+
+function updatePropertyTypes(category){
+  propertyTypeSelect.innerHTML = '<option value="" disabled selected>Select a type</option>';
+  const opts = TYPE_OPTIONS[category] || [];
+  [...new Set(opts)].forEach(t => {
+    const o = document.createElement('option');
+    o.value = t; o.textContent = t;
+    propertyTypeSelect.appendChild(o);
+  });
+  const isResidential = category === 'Residential';
+  resOnlyFields.forEach(f => f.classList.toggle('type-hidden', !isResidential));
+}
+
+const form = document.getElementById('propertyForm');
+const msg = document.getElementById('formMsg');
+const submitBtn = document.getElementById('submitBtn');
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  msg.className = ''; msg.style.display = 'none';
+
+  // Custom, always-visible check for the two hidden-radio steps first —
+  // native browser validation can silently do nothing on a hidden radio,
+  // which used to leave the button looking like it did nothing at all.
+  if (!document.querySelector('input[name="category"]:checked')) {
+    msg.textContent = 'Please select a Property Category (Residential, Commercial, Agricultural, or Plot / Land) in step 1.';
+    msg.className = 'err';
+    msg.style.display = 'block';
+    categoryRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+  if (!document.querySelector('input[name="purpose"]:checked')) {
+    msg.textContent = 'Please select a Listing Purpose (Sale, Rental, or Lease) in step 2.';
+    msg.className = 'err';
+    msg.style.display = 'block';
+    purposeRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+  if(!form.checkValidity()){ form.reportValidity(); return; }
+
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = '<i class="bi bi-arrow-repeat"></i> Saving...';
+
+  try{
+    const fd = new FormData(form);
+
+    if (PROPERTYCRM_API_CONFIGURED) {
+      const res = await fetch(PROPERTYCRM_PROPERTY_API_URL, { method: 'POST', body: fd });
+      const data = await res.json().catch(() => ({}));
+      if(!res.ok){ throw new Error(data.message || 'Server error'); }
+      msg.textContent = 'Property saved to Property CRM stock successfully.';
+    } else {
+      // Live CRM endpoint isn't connected yet — save the listing (with its
+      // photos) into this browser's local storage instead, so it shows up
+      // right away under "Search Property" on the homepage.
+      const fileInput = form.querySelector('input[name="images[]"]');
+      const files = fileInput && fileInput.files ? Array.from(fileInput.files).slice(0, MAX_PHOTOS) : [];
+      const property = await buildPropertyFromForm(fd, files);
+      saveLocally(property);
+      msg.textContent = `Saved on this device with ${property.photos.length} photo(s) — check "Search Property" on the homepage to see it. (Live Property CRM isn't connected yet — see note below.)`;
+    }
+
+    msg.className = 'ok';
+    msg.style.display = 'block';
+    form.reset();
+    categoryRow.querySelectorAll('.choice-card').forEach(c => c.classList.remove('selected'));
+    purposeRow.querySelectorAll('.choice-card').forEach(c => c.classList.remove('selected'));
+    propertyTypeSelect.innerHTML = '<option value="" disabled selected>Select category first</option>';
+    resOnlyFields.forEach(f => f.classList.add('type-hidden'));
+  }catch(err){
+    msg.textContent = 'Could not save: ' + err.message;
+    msg.className = 'err';
+    msg.style.display = 'block';
+  }finally{
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = '<i class="bi bi-cloud-upload"></i> Save to Property CRM';
+  }
+});
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
